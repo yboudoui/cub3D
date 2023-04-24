@@ -1,0 +1,85 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
+/*   Updated: 2023/04/24 20:17:56 by yboudoui         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub3D.h"
+
+#define WIDTH 800
+#define HEIGHT 640
+
+char map[][] = {
+{1,1,1,1,1,1,1,1,1},
+{1,0,0,0,0,0,0,0,1},
+{1,0,0,0,1,0,0,0,1},
+{1,0,0,0,1,0,1,0,1},
+{1,0,0,0,1,0,0,0,1},
+{1,0,0,0,0,0,0,0,1},
+{1,1,1,1,1,1,1,1,1},
+};
+
+t_vec2f	player_pos = (t_vec2){1,1};
+float	player_view = 290;
+
+#define CUBE_SIZE 64
+
+typedef struct horizontal {
+	t_vec2f	intersection;
+	t_vec2f	incrementation;
+}	t_horizontal;
+
+t_horizontal	find_first_intersection(t_vec2f player_pos, float angle_view)
+{
+	t_vec2f	out;
+
+	if (angle_view > 180 && angle_view < 0)
+		out.y = (round(player_pos.y / CUBE_SIZE) * CUBE_SIZE) - 1;
+	else
+		out.y = (round(player_pos.y / CUBE_SIZE) * CUBE_SIZE) - CUBE_SIZE;
+
+	out.x = player_pos.x + (player_pos.y - out.y) / tan(angle_view);
+
+}
+
+t_vec2f	find_first_intersection(t_vec2f player_pos, float angle_view)
+{
+	t_vec2f	out;
+
+	if (angle_view > 180 && angle_view < 0)
+		out.y = (round(player_pos.y / CUBE_SIZE) * CUBE_SIZE) - 1;
+	else
+		out.y = (round(player_pos.y / CUBE_SIZE) * CUBE_SIZE) - CUBE_SIZE;
+
+	out.x = player_pos.x + (player_pos.y - out.y) / tan(angle_view);
+
+}
+
+int	draw(t_screen *screen)
+{
+	screen->center = screen->mlx->event.mouse.pos;
+	if (false == update_state(screen))//	here update mouse + keyboard state
+		return (-1);
+	draw_image(screen);
+	mlx_put_image_to_window(screen->mlx->mlx, screen->mlx->win,
+		screen->img->data, 0, 0);
+	return (0);
+}
+
+int	main(void)
+{
+	t_screen	*screen;
+
+	screen = screen_create("cub3D", WIDTH, HEIGHT);
+	if (NULL == screen)
+		return (-2);
+	mlx_loop_hook(screen->mlx->mlx, draw, screen);
+	mlx_loop(screen->mlx->mlx);
+	return (screen_destroy(screen), 0);
+}
