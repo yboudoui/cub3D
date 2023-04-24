@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/24 17:26:02 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:51:49 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	draw_image(t_screen *screen)
 		.color.raw = 0x00FF00
 	};
 	quad.point[0][1] = (t_pixel){
-		.coord = (t_vec2){50, 590},
-		.color = b
+		.coord = (t_vec2){200, 400},
+		.color.raw = 0xFFFFFF
 	};
 	quad.point[1][0] = (t_pixel){
 		.coord = (t_vec2){750, 50},
