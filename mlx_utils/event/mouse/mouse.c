@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 06:34:41 by yboudoui          #+#    #+#             */
-/*   Updated: 2022/11/27 07:12:39 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/25 14:55:31 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,20 @@ static int	mouse_press(int key, int x, int y, t_event_mouse *event)
 
 static int	mouse_position(int x, int y, t_event_mouse *event)
 {
-	event->pos = (t_vec2){x, y};
+	t_vec2	new;
+
+	new = (t_vec2){x, y};
+	if (x == event->pos.x && y == event->pos.y)
+		event->delta = (t_vec2){0,0};
+	else
+		event->delta = substract_vec2(new, event->pos);
+	event->pos = new;
 	return (0);
 }
 
 void	mouse_event_handlers(void *win, t_event_mouse *event)
 {
 	mlx_hook(win, 4, 1L << 2, mouse_press, event);
+//	mlx_hook(win, 9, 1L << 6, mouse_position, event);
 	mlx_hook(win, 6, 1L << 8, mouse_position, event);
 }
