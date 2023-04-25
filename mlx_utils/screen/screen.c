@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 16:07:02 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/24 17:08:59 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:25:38 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	screen_destroy(t_screen *screen)
 	delete_mlx(screen->mlx);
 	free(screen);
 }
-
+#include <stdio.h>
 t_screen	*screen_create(char *path, int width, int height)
 {
 	t_screen	*out;
@@ -33,5 +33,6 @@ t_screen	*screen_create(char *path, int width, int height)
 		return (screen_destroy(out), NULL);
 	out->img = image_new(out->mlx, width, height);
 	out->center = (t_vec2){width / 2, height / 2};
+	out->size = (t_vec2){width, height};
 	return (out);
 }

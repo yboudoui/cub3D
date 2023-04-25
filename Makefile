@@ -6,15 +6,13 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/04/24 17:12:16 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/04/25 13:30:59 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME				=	cub3D
 
 CC					=	cc
-
-EXTRA_FLAG			=	-Ofast -flto=full -DBONUS
 
 CFLAGS				=	-Wall -Wextra -Werror
 
@@ -49,6 +47,7 @@ SRCS	=\
 ./utils/get_next_line/get_next_line_utils.c\
 ./utils/get_next_line/get_next_line.c\
 ./cub3D.c\
+./dda.c\
 ./main.c\
 ./mlx_utils/color/color.c\
 ./mlx_utils/vec2/vec2.c\
@@ -116,10 +115,10 @@ fclean:		clean
 
 re:			fclean all
 
-valgrind:	fclean
-			@$(MAKE) all -C . EXTRA_FLAG="-g3"
+valgrind:	CFLAGS+= -g3
+valgrind:	re
 			@valgrind														\
-			-s																\
+			-q																\
 			--leak-check=full												\
 			--show-leak-kinds=all											\
 			--track-origins=yes												\

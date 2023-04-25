@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 14:22:47 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/24 17:19:44 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/25 15:00:16 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,19 @@ static bool	update_scrol(t_screen *screen)
 */
 bool	update_state(t_screen *screen)
 {
+
+	t_data	*data;
+
+	data = screen->data;
+	if (screen->mlx->event.mouse.delta.x)
+	{
+		if (screen->mlx->event.mouse.delta.x > 0)
+			data->player_view += 1;
+		else
+			data->player_view -= 1;
+		screen->mlx->event.mouse.delta.x = 0;
+	}
+
 /*
 	if (screen->mlx->event.keyboard.enter)
 	{

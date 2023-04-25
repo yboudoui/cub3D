@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 06:39:54 by yboudoui          #+#    #+#             */
-/*   Updated: 2022/11/27 07:15:51 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/25 16:16:15 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdbool.h>
 
 typedef struct s_event_mouse {
+	t_vec2	delta;
 	t_vec2	pos;
 	bool	scrol_up;
 	bool	scrol_down;
