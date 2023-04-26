@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 14:22:47 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/25 15:00:16 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/26 18:00:17 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,14 @@ bool	update_state(t_screen *screen)
 	if (screen->mlx->event.mouse.delta.x)
 	{
 		if (screen->mlx->event.mouse.delta.x > 0)
-			data->player_view += 1;
+			data->player.view += 0.1 * data->player.mouse_speed;
 		else
-			data->player_view -= 1;
-		screen->mlx->event.mouse.delta.x = 0;
+			data->player.view -= 0.1 * data->player.mouse_speed;
+//		screen->mlx->event.mouse.delta.x = 0;
+		if (data->player.view >= 180)
+			data->player.view *= -1;
+//		if (data->player.view < 0)
+//			data->player.view = 180;
 	}
 
 /*
