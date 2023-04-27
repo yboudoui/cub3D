@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/26 18:03:33 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:26:19 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 # include "image.h"
 # include <math.h>
 
+typedef struct s_map {
+	char	**data;
+	t_vec2	size;
+}	t_map;
+
 typedef struct s_player {
 	t_vec2f	pos;
 	float	view;
@@ -24,15 +29,21 @@ typedef struct s_player {
 	float	mouse_speed;
 }	t_player;
 
-typedef struct s_data {
-	char		**map;
-	t_player	player;
-}	t_data;
+typedef struct s_wall {
+	float	distance;
+	float	angle;
+}	t_wall;
 
-#include <stdio.h>
+typedef struct s_data {
+	t_map		map;
+	t_image		*mini_map;
+	t_player	player;
+	t_wall		*walls;
+}	t_data;
 
 void	draw_image(t_screen *data);
 bool	update_state(t_screen *data);
 
-float	dda_checker(t_vec2f pos, float angle, char **map);
+float	dda_checker(t_vec2f pos, float angle, t_map map);
+#include <stdio.h>
 #endif

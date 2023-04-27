@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/26 18:03:14 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:25:58 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ static t_dda	dda_vertical(t_vec2f pos, float angle)
 	return (out);
 }
 
-float	dda_checker(t_vec2f pos, float angle, char **map)
+float	dda_checker(t_vec2f pos, float angle, t_map map)
 {
+	static bool start = false;;
+
 	t_dda	horizontal;
 	t_dda	vertical;
 
@@ -91,8 +93,13 @@ float	dda_checker(t_vec2f pos, float angle, char **map)
 
 	horizontal = dda_horizontal(pos, angle);
 	vertical = dda_vertical(pos, angle);
-	while (map[(int)pos.y][(int)pos.x] != '1')
+	while (map.data[(int)pos.y][(int)pos.x] != '1')
 	{
+		if (start == false)
+		{
+			start = true;
+			printf("start\n");
+		}
 		new_h = add_vec2f(pos, horizontal.pad);
 		new_v = add_vec2f(pos, vertical.pad);
 
@@ -111,5 +118,11 @@ float	dda_checker(t_vec2f pos, float angle, char **map)
 			total_len += dist_v;
 		}
 	}
+	if (start == true)
+	{
+		start = false;
+		printf("end\n");
+	}
+
 	return (total_len);
 }

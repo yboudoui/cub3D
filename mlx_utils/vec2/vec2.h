@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:22:41 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/24 19:54:18 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:19:10 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ typedef struct s_vec2 {
 	int	x;
 	int	y;
 }	t_vec2;
+
+t_vec2	vec2(int x, int y);
 
 int		is_equal(t_vec2 a, t_vec2 b);
 t_vec2	cmp_vec2(t_vec2 a, t_vec2 b);

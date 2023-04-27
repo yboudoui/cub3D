@@ -6,46 +6,19 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/26 18:07:13 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:26:51 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-/*
-static inline void	drawer(t_screen *screen, t_quad quad)
-{
-	int	mode;
-
-	mode = 1;
-	if (mode == 1)
-		image_put_quad(screen->img, quad);
-	else
-		image_put_empty_quad(screen->img, quad);
-}
-*/
-
-t_pixel	pixel_create(int x, int y, int raw_color)
-{
-	return ((t_pixel){
-		.coord = (t_vec2){x, y},
-		.color.raw = raw_color
-	});
-}
 
 void	draw_floor_and_ceiling(t_screen *s, t_color ground, t_color ceiling)
 {
 	t_quad	g;
 	t_quad	c;
 
-	g.point[0][0] = pixel_create(0, s->size.y / 2, ground.raw);
-	g.point[0][1] = pixel_create(s->size.x, s->size.y / 2, ground.raw);
-	g.point[1][0] = pixel_create(0, s->size.y, ground.raw);
-	g.point[1][1] = pixel_create(s->size.x, s->size.y, ground.raw);
-
-	c.point[0][0] = pixel_create(0, 0, ceiling.raw);
-	c.point[0][1] = pixel_create(s->size.x, 0, ceiling.raw);
-	c.point[1][0] = pixel_create(0, s->size.y / 2, ceiling.raw);
-	c.point[1][1] = pixel_create(s->size.x, s->size.y / 2, ceiling.raw);
+	g = rectangle(vec2(0,0), vec2(s->size.x, s->size.y / 2), ground);
+	c = rectangle(vec2(0,s->size.y / 2), vec2(s->size.x, s->size.y / 2), ceiling);
 	image_put_quad(s->img, c);
 	image_put_quad(s->img, g);
 }
@@ -57,27 +30,123 @@ float	deg_to_rad(float deg)
 	return (deg * M_PI / 180);
 }
 
+void	draw_minimap_grid(t_screen *screen)
+{
+	t_data	*data;
+	t_quad	block;
+	const t_vec2	block_size = {16, 16};
+	t_vec2	pos;
+
+	data = screen->data;
+	pos = (t_vec2){0, 0};
+	while (pos.y < data->map.size.y)
+	{
+		pos.x = 0;
+		while (pos.x < data->map.size.x)
+		{
+			block = rectangle(mul_vec2(pos, block_size), block_size, (t_color){.raw = 0xDDDDDD});
+			image_put_empty_quad(data->mini_map, block);
+			pos.x += 1;
+		}
+		pos.y += 1;
+	}
+	image_put_to_image(data->mini_map, screen->img);
+}
+
+
+void	draw_minimap(t_screen *screen)
+{
+	t_data	*data;
+	t_quad	block;
+	const t_vec2	block_size = {16, 16};
+	t_vec2	pos;
+
+	data = screen->data;
+	image_clear(data->mini_map, (t_color){.raw = 0xFFFFFF});
+	draw_minimap_grid(screen);
+	pos = (t_vec2){0, 0};
+	while (pos.y < data->map.size.y)
+	{
+		pos.x = 0;
+		while (pos.x < data->map.size.x)
+		{
+			if (data->map.data[pos.y][pos.x] == '1')
+			{
+				block = rectangle(mul_vec2(pos, block_size), block_size, (t_color){.raw = 0x0});
+				image_put_empty_quad(data->mini_map, block);
+			}
+			pos.x += 1;
+		}
+		pos.y += 1;
+	}
+}
+
+void	update_minimap(t_screen *screen)
+{
+	int	index;
+	t_data	*data;
+	t_quad	block;
+	t_pixel	new;
+	t_pixel	pos;
+
+	draw_minimap(screen);
+	data = screen->data;
+	index = 0;
+	new.color.raw = 0xFF0000;
+	pos.color.raw = 0xFF0000;
+	pos.coord.x = (data->player.pos.x * 16) - 1;
+	pos.coord.y = (data->player.pos.y * 16) - 1;
+	block = rectangle(pos.coord, vec2(3,3), pos.color);
+	image_put_empty_quad(data->mini_map, block);
+	while (index < screen->size.x)
+	{
+		new.coord.y = cos(deg_to_rad(data->walls[index].angle)) * data->walls[index].distance;
+		new.coord.x = sin(deg_to_rad(data->walls[index].angle)) * data->walls[index].distance;
+		new.coord = mul_vec2(new.coord, vec2(13, 16));
+		image_put_line(data->mini_map, pos, new);
+		index += 1;
+	}
+}
+
+void	update_wall_distance(t_screen *screen)
+{
+	t_data	*data;
+	int		index;
+	float	angle;
+	float	pad = 60.0 / screen->size.x;
+
+	data = screen->data;
+	index = 0;
+	while (index < screen->size.x)
+	{
+		angle = (data->player.view - 30) + (pad * index);
+		data->walls[index].distance = dda_checker(data->player.pos, angle, data->map);
+		data->walls[index].angle = angle;
+		index += 1;
+	}
+}
+
 void	draw_image(t_screen *screen)
 {
 	t_data	*data;
-	float	distance;
-	float	wall_height;
+	float	wall;
 	int		index;
-	float	angle;
+	float	pad = 60.0 / screen->size.x;
 
 	data = screen->data;
 	index = 0;
 	draw_floor_and_ceiling(screen, (t_color){.raw = 0xFF00FF}, (t_color){.raw = 0x0000FF});
-	float	pad = 60.0 / screen->size.x;
+	update_wall_distance(screen);
 	while (index < screen->size.x)
 	{
-		angle = (data->player.view - 30) + (pad * index);
-		distance = dda_checker(data->player.pos, angle, data->map);
-		distance *= cosf(deg_to_rad(-30 + (index * pad))); //fish_eye correcteur
-		wall_height = 1 / distance * DIST;
+		wall = data->walls[index].distance;
+		wall *= cosf(deg_to_rad(-30 + (index * pad))); //fish_eye correcteur
+		wall = 1 / wall * DIST;
 		image_put_line(screen->img,
-			(t_pixel){.coord = (t_vec2){index, screen->center.y + (wall_height / 2)}, .color.raw = 0xFFFF00},
-			(t_pixel){.coord = (t_vec2){index, screen->center.y - (wall_height / 2)}, .color.raw = 0x00FFFF});
+			(t_pixel){.coord = (t_vec2){index, screen->center.y + (wall / 2)}, .color.raw = 0xFFFF00},
+			(t_pixel){.coord = (t_vec2){index, screen->center.y - (wall / 2)}, .color.raw = 0x00FFFF});
 		index += 1;
 	}
+	update_minimap(screen);
+	image_put_to_image(data->mini_map, screen->img);
 }
