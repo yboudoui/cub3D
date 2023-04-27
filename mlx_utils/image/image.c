@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:17:12 by yboudoui          #+#    #+#             */
-/*   Updated: 2022/11/27 14:43:37 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 16:06:21 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	delete_image(t_image *img)
 	free(img);
 }
 
-t_image	*image_new(t_mlx *data, int width, int height)
+t_image	*image_new(t_mlx *data, t_vec2 size)
 {
 	t_image	*out;
 
@@ -28,13 +28,13 @@ t_image	*image_new(t_mlx *data, int width, int height)
 	if (NULL == out)
 		return (NULL);
 	out->mlx = data->mlx;
-	out->height = height;
-	out->width = width;
-	out->data = mlx_new_image(out->mlx, width, height);
+	out->size = size;
+	out->data = mlx_new_image(out->mlx, size.x, size.y);
 	out->addr = mlx_get_data_addr(out->data,
 			&out->bits_per_pixel,
 			&out->line_length,
 			&out->endian);
+	image_clear(out, (t_color){.raw = 0x000000});
 	return (out);
 }
 
@@ -42,8 +42,8 @@ void	image_clear(t_image *img, t_color color)
 {
 	size_t	size;
 
-	size = (img->width - 1) * (img->bits_per_pixel / 8);
-	size += (img->height - 1) * (img->line_length);
+	size = (img->size.x - 1) * (img->bits_per_pixel / 8);
+	size += (img->size.y - 1) * (img->line_length);
 	ft_memset(img->addr, color.raw, size);
 }
 
@@ -51,13 +51,28 @@ inline void	image_put_pixel(t_image *img, t_pixel pixel)
 {
 	char	*dst;
 
-	if (pixel.coord.x < 0 || pixel.coord.x >= img->width)
+	if (pixel.coord.x < 0 || pixel.coord.x >= img->size.x)
 		return ;
-	if (pixel.coord.y < 0 || pixel.coord.y >= img->height)
+	if (pixel.coord.y < 0 || pixel.coord.y >= img->size.y)
 		return ;
 	dst = img->addr;
 	pixel.coord.x *= (img->bits_per_pixel / 8);
 	pixel.coord.y *= (img->line_length);
 	dst += (int)(pixel.coord.y + pixel.coord.x);
 	*(unsigned int *)dst = pixel.color.raw;
+}
+
+inline void	image_put_to_image(t_image *src, t_image *dest)
+{
+	int	index;
+
+	index = 0;
+	while (index < src->size.y)
+	{
+		ft_memcpy(
+				&dest->addr[index * dest->line_length],
+				&src->addr[index * src->line_length],
+				src->line_length);
+		index += 1;
+	}
 }

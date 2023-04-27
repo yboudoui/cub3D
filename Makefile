@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/04/25 13:30:59 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/04/27 15:08:18 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,6 @@ SRCS	=\
 ./utils/get_next_line/get_next_line_utils.c\
 ./utils/get_next_line/get_next_line.c\
 ./cub3D.c\
-./dda.c\
 ./main.c\
 ./mlx_utils/color/color.c\
 ./mlx_utils/vec2/vec2.c\
@@ -56,12 +55,14 @@ SRCS	=\
 ./mlx_utils/event/keyboard/keyboard.c\
 ./mlx_utils/event/mouse/mouse.c\
 ./mlx_utils/line/line.c\
+./mlx_utils/pixel/pixel.c\
 ./mlx_utils/screen/screen.c\
 ./mlx_utils/mlx_utils.c\
 ./mlx_utils/image/quad.c\
 ./mlx_utils/image/triangle.c\
 ./mlx_utils/image/image.c\
 ./mlx_utils/image/line.c\
+./dda.c\
 ./draw/event_state.c\
 ./draw/draw.c\
 
@@ -84,6 +85,7 @@ INCS	=\
 ./mlx_utils/event/keyboard\
 ./mlx_utils/event/mouse\
 ./mlx_utils/line\
+./mlx_utils/pixel\
 ./mlx_utils/screen\
 ./mlx_utils\
 ./mlx_utils/image\

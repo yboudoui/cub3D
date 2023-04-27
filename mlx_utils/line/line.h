@@ -6,20 +6,14 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:33:11 by yboudoui          #+#    #+#             */
-/*   Updated: 2022/11/24 14:19:58 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 15:19:03 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LINE_H
 # define LINE_H
 
-# include "vec2.h"
-# include "color.h"
-
-typedef struct s_pixel {
-	t_vec2	coord;
-	t_color	color;
-}	t_pixel;
+# include "pixel.h"
 
 typedef struct s_bresenham_data {
 	t_vec2	derivative;

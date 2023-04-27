@@ -6,11 +6,16 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:25:11 by yboudoui          #+#    #+#             */
-/*   Updated: 2022/11/24 15:28:25 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 16:06:33 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec2.h"
+
+t_vec2	vec2(int x, int y)
+{
+	return ((t_vec2){x, y});
+}
 
 int	cmp(int a, int b)
 {

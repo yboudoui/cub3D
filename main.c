@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/26 18:04:49 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/27 17:22:00 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char *map[] = {
 "1000000001",
 "1000000001",
 "1111111111",
+NULL,
 };
 
 int	draw(t_screen *screen)
@@ -45,19 +46,18 @@ int	main(void)
 	t_screen	*screen;
 	t_data		data;
 
-	data = (t_data){
-		.map = (char **)map,
-		.player = (t_player){
-			.pos = (t_vec2f){3.5, 2.2},
+	screen = screen_create("cub3D", vec2(WIDTH, HEIGHT));
+	if (NULL == screen)
+		return (-2);
+	data.map = (t_map){(char **)map, vec2(10, 12)};
+	data.mini_map = image_new(screen->mlx, add_vec2(mul_vec2(data.map.size, vec2(16, 16)), vec2(1, 1)));
+	data.player = (t_player){
+			.pos = (t_vec2f){5, 5.6},
 			.view = 90.0,
 			.fov = 60,
 			.mouse_speed = 56,
-		}
-	};
-
-	screen = screen_create("cub3D", WIDTH, HEIGHT);
-	if (NULL == screen)
-		return (-2);
+		};
+	data.walls = ft_calloc(screen->size.x, sizeof(t_wall));
 	screen->data = &data;
 	mlx_loop_hook(screen->mlx->mlx, draw, screen);
 	mlx_loop(screen->mlx->mlx);
