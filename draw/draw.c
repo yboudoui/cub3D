@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/27 17:26:51 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 11:28:12 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,20 @@ void	update_minimap(t_screen *screen)
 {
 	int	index;
 	t_data	*data;
-	t_quad	block;
 	t_pixel	new;
 	t_pixel	pos;
 
 	draw_minimap(screen);
 	data = screen->data;
 	index = 0;
-	new.color.raw = 0xFF0000;
 	pos.color.raw = 0xFF0000;
-	pos.coord.x = (data->player.pos.x * 16) - 1;
-	pos.coord.y = (data->player.pos.y * 16) - 1;
-	block = rectangle(pos.coord, vec2(3,3), pos.color);
-	image_put_empty_quad(data->mini_map, block);
+	pos.coord.x = (data->player.pos.x * 16);
+	pos.coord.y = (data->player.pos.y * 16);
 	while (index < screen->size.x)
 	{
-		new.coord.y = cos(deg_to_rad(data->walls[index].angle)) * data->walls[index].distance;
-		new.coord.x = sin(deg_to_rad(data->walls[index].angle)) * data->walls[index].distance;
-		new.coord = mul_vec2(new.coord, vec2(13, 16));
+		new = pos;
+		new.coord.x += cos(deg_to_rad(data->walls[index].angle)) * (data->walls[index].distance * 16);
+		new.coord.y += sin(deg_to_rad(data->walls[index].angle)) * (data->walls[index].distance * 16) * -1;
 		image_put_line(data->mini_map, pos, new);
 		index += 1;
 	}

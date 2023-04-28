@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:25:11 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/27 16:06:33 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 10:48:57 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,13 @@ t_vec2	add_vec2(t_vec2 a, t_vec2 b)
 	out.x = a.x + b.x;
 	out.y = a.y + b.y;
 	return (out);
+}
+
+bool	vec2i_in_range(t_vec2 v, t_vec2 min, t_vec2 max)
+{
+	if (min.x > v.x || v.x > max.x)
+		return (false);
+	if (min.y > v.y || v.y > max.y)
+		return (false);
+	return (true);
 }

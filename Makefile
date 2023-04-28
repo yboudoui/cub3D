@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/04/27 15:08:18 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/04/28 10:33:04 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,7 @@ SRCS	=\
 ./main.c\
 ./mlx_utils/color/color.c\
 ./mlx_utils/vec2/vec2.c\
+./mlx_utils/vec2/vec2f.c\
 ./mlx_utils/event/window/window.c\
 ./mlx_utils/event/event.c\
 ./mlx_utils/event/keyboard/keyboard.c\
