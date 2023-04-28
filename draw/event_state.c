@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 14:22:47 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 11:34:20 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 16:37:25 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	update_state(t_screen *screen)
 		else
 			data->player.view -= 0.1 * data->player.mouse_speed;
 //		screen->mlx->event.mouse.delta.x = 0;
-//		data->player.view = wrap_angle(data->player.view);
+		data->player.view = wrap_angle(data->player.view);
 	}
 
 /*
