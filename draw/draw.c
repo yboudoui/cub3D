@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 11:28:12 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 16:41:50 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	update_minimap(t_screen *screen)
 	{
 		new = pos;
 		new.coord.x += cos(deg_to_rad(data->walls[index].angle)) * (data->walls[index].distance * 16);
-		new.coord.y += sin(deg_to_rad(data->walls[index].angle)) * (data->walls[index].distance * 16) * -1;
+		new.coord.y -= sin(deg_to_rad(data->walls[index].angle)) * (data->walls[index].distance * 16);
 		image_put_line(data->mini_map, pos, new);
 		index += 1;
 	}
@@ -112,10 +112,12 @@ void	update_wall_distance(t_screen *screen)
 	float	pad = 60.0 / screen->size.x;
 
 	data = screen->data;
+	screen->size.x = 1;
 	index = 0;
 	while (index < screen->size.x)
 	{
-		angle = (data->player.view - 30) + (pad * index);
+		//angle = (data->player.view - 30) + (pad * index);
+		angle = (data->player.view) + (pad * index);
 		data->walls[index].distance = dda_checker(data->player.pos, angle, data->map);
 		data->walls[index].angle = angle;
 		index += 1;
@@ -144,5 +146,8 @@ void	draw_image(t_screen *screen)
 		index += 1;
 	}
 	update_minimap(screen);
+
+
 	image_put_to_image(data->mini_map, screen->img);
+//	mlx_string_put(screen->mlx->mlx, screen->mlx->win, 200, 200, 0, "hello world");
 }
