@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 17:56:14 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:59:26 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,9 @@ static float	dda_horizontal(t_vec2f pos, float angle, t_map map)
 	float	len;
 	t_vec2	p;
 
-	if (180 > angle && angle > 0)
+	if (angle == 180 || angle == 0)
+		return (INFINITY);
+	if (180 > angle)// && angle > 0)
 	{
 		out.point.y = round(pos.y) - 1;
 		out.pad.y = -1;
@@ -128,24 +130,26 @@ static float	dda_horizontal(t_vec2f pos, float angle, t_map map)
 		out.point.y = round(pos.y);
 		out.pad.y = 1;
 	}
-	angle =  (angle * M_PI / 180.0);
-	out.point.x = pos.x + (pos.y - out.point.y) / tanf(angle);
-	out.pad.x = 1 / tanf(angle);
+	angle =  tanf(angle * M_PI / 180.0);
+	out.point.x = pos.x + (pos.y - out.point.y) / angle;
+	out.pad.x = 1 / angle;
 
-	pos = out.point;
 	p = (t_vec2){
-		.x = (int)pos.x,
-		.y = (int)pos.y,
+		.x = (int)out.point.x,
+		.y = (int)out.point.y,
 	};
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
-		len = vec2f_dist(pos, out.point);
+		len = vec2f_dist(out.point, pos);
 		if (map.data[p.y][p.x] == '1')
+		{
+//			printf("[%d %d] = %c\n", p.x, p.y, map.data[p.y][p.x]);
 			return(len);
-		pos = vec2f_add(pos, out.pad);
+		}
+		out.point = vec2f_add(out.point, out.pad);
 		p = (t_vec2){
-			.x = (int)pos.x,
-			.y = (int)pos.y,
+			.x = (int)out.point.x,
+			.y = (int)out.point.y,
 		};
 	}
 	return (INFINITY);
@@ -162,50 +166,50 @@ static float	dda_vertical(t_vec2f pos, float angle, t_map map)
 	if (270 > angle && angle > 90)
 	{
 		out.point.x = round(pos.x) - 1;
-		out.pad.x = 1;
+		out.pad.x = -1;
 	}
 	else
 	{
 		out.point.x = round(pos.x);
-		out.pad.x = -1;
+		out.pad.x = 1;
 	}
-	angle =  (angle * M_PI / 180.0);
-	out.point.y = pos.y + (pos.x - out.point.x) * tanf(angle);
-	out.pad.y = 1 * tanf(angle);
+	angle =  tanf(angle * M_PI / 180.0);
+	out.point.y = pos.y + (pos.x - out.point.x) * angle;
+	out.pad.y = 1 * angle;
 
-	pos = out.point;
 	p = (t_vec2){
-		.x = (int)pos.x,
-		.y = (int)pos.y,
+		.x = (int)out.point.x,
+		.y = (int)out.point.y,
 	};
-	printf("_____________\n");
-	printf("%f %f\n", out.point.x, out.point.y);
-	printf("%d %d\n", p.x, p.y);
-	printf("%f %f\n", out.pad.x, out.pad.y);
+
+//	printf("_____________\n");
+//	printf("%f %f\n", out.point.x, out.point.y);
+//	printf("%d %d\n", p.x, p.y);
+//	printf("%f %f\n", out.pad.x, out.pad.y);
 
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
-		len = vec2f_dist(pos, out.point);
+		len = vec2f_dist(out.point, pos);
 		if (map.data[p.y][p.x] == '1')
+		{
+			printf("[%d %d] = %c\n", p.x, p.y, map.data[p.y][p.x]);
 			return(len);
-		printf("%d %d\n", p.x, p.y);
-		pos = vec2f_add(pos, out.pad);
+		}
+		out.point = vec2f_add(out.point, out.pad);
 		p = (t_vec2){
-			.x = (int)pos.x,
-			.y = (int)pos.y,
+			.x = (int)out.point.x,
+			.y = (int)out.point.y,
 		};
 	}
 	return (INFINITY);
 }
-
-
-
 
 float	dda_checker(t_vec2f pos, float angle, t_map map)
 {
 	float	dist_h;
 	float	dist_v;
 
+//	printf("%f\n", angle);
 	map.size = add_vec2(map.size, vec2(-1, -1));
 	dist_h = dda_horizontal(pos, angle, map);
 	dist_v = dda_vertical(pos, angle, map);
@@ -214,3 +218,4 @@ float	dda_checker(t_vec2f pos, float angle, t_map map)
 		return (dist_h);
 	return (dist_v);
 }
+

@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:27:10 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 10:34:38 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 18:29:57 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ t_vec2f	vec2f_add(t_vec2f a, t_vec2f b)
 	return (out);
 }
 
+#include <stdio.h>
 float	vec2f_dist(t_vec2f a, t_vec2f b)
 {
 	t_vec2f	dist;
 
 	dist.x = fabsf(a.x - b.x);
 	dist.y = fabsf(a.y - b.y);
-	return (sqrtf(powf(dist.x, 2) + powf(dist.y, 2)));
+	return (hypotf(dist.x, dist.y));
 }
