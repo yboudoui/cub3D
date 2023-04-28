@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/27 17:22:00 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 13:19:46 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	main(void)
 	data.map = (t_map){(char **)map, vec2(10, 12)};
 	data.mini_map = image_new(screen->mlx, add_vec2(mul_vec2(data.map.size, vec2(16, 16)), vec2(1, 1)));
 	data.player = (t_player){
-			.pos = (t_vec2f){5, 5.6},
-			.view = 90.0,
+			.pos = (t_vec2f){5.5, 3.2},
+			.view = 180.0,
 			.fov = 60,
 			.mouse_speed = 56,
 		};

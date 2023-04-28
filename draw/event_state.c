@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 14:22:47 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/26 18:00:17 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/28 11:34:20 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ static bool	update_scrol(t_screen *screen)
 	return (true);
 }
 */
+
+float	wrap_angle(float angle_deg)
+{
+	float	angle_mod;
+
+	angle_mod = fmod(angle_deg, 360.0);
+	if (angle_mod < 0)
+		angle_mod += 360.0;
+	return (angle_mod);
+}
+
 bool	update_state(t_screen *screen)
 {
 
@@ -47,10 +58,7 @@ bool	update_state(t_screen *screen)
 		else
 			data->player.view -= 0.1 * data->player.mouse_speed;
 //		screen->mlx->event.mouse.delta.x = 0;
-		if (data->player.view >= 180)
-			data->player.view *= -1;
-//		if (data->player.view < 0)
-//			data->player.view = 180;
+//		data->player.view = wrap_angle(data->player.view);
 	}
 
 /*
