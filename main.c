@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 18:58:22 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/30 18:11:50 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(void)
 			.view = 280.397461,
 			.fov = 60,
 			.mouse_speed = 0.5
-//			.mouse_speed = 56
+			/* .mouse_speed = 56 */
 		};
 	data.walls = ft_calloc(screen->size.x, sizeof(t_wall));
 	screen->data = &data;

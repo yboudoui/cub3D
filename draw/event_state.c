@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 14:22:47 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 16:37:25 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/30 18:15:28 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,47 @@ float	wrap_angle(float angle_deg)
 	return (angle_mod);
 }
 
+bool	update_keyboard(t_screen *screen)
+{
+	t_data	*data;
+	
+	data = screen->data;
+	if (screen->mlx->event.keyboard.move_forward)
+	{
+		data->player.pos.x += cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+		data->player.pos.y += sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+	}
+	if (screen->mlx->event.keyboard.move_backward)
+{
+	data->player.pos.x -= cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+	data->player.pos.y -= sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+}
+
+if (screen->mlx->event.keyboard.move_left)
+{
+	data->player.pos.x += sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+	data->player.pos.y -= cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+}
+
+if (screen->mlx->event.keyboard.move_right)
+{
+	data->player.pos.x -= sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+	data->player.pos.y += cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+}
+
+if (screen->mlx->event.keyboard.look_left)
+{
+	data->player.view -= data->player.mouse_speed;
+}
+
+if (screen->mlx->event.keyboard.look_right)
+{
+	data->player.view += data->player.mouse_speed;
+}
+
+	return (true);
+}
+
 bool	update_state(t_screen *screen)
 {
 
@@ -68,6 +109,8 @@ bool	update_state(t_screen *screen)
 		return (true);
 	}
 */
+	
+
 	if (screen->mlx->event.keyboard.escape == true)
 		return (mlx_loop_end(screen->mlx->mlx), false);
 	if (screen->mlx->event.window.destroy == true)
@@ -78,5 +121,6 @@ bool	update_state(t_screen *screen)
 	else
 		return (update_scrol(screen));
 */
+	update_keyboard(screen);
 	return (true);
 }
