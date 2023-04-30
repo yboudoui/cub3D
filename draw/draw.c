@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 18:57:16 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/30 16:29:15 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ void	update_wall_distance(t_screen *screen)
 	float	pad = 60.0 / screen->size.x;
 
 	data = screen->data;
-	screen->size.x = 1;
+	/* screen->size.x = 1; */
 	index = 0;
 	while (index < screen->size.x)
 	{
-//		angle = (data->player.view - 30) + (pad * index);
+		angle = (data->player.view - 30) + (pad * index);
 		angle = (data->player.view) + (pad * index);
 		data->walls[index].distance = dda_checker(data->player.pos, angle, data->map);
 		data->walls[index].angle = angle;

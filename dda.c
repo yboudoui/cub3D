@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 18:59:26 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/04/30 16:51:58 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ static float	dda_vertical(t_vec2f pos, float angle, t_map map)
 		len = vec2f_dist(out.point, pos);
 		if (map.data[p.y][p.x] == '1')
 		{
-			printf("[%d %d] = %c\n", p.x, p.y, map.data[p.y][p.x]);
+			/* printf("[%d %d] = %c\n", p.x, p.y, map.data[p.y][p.x]); */
 			return(len);
 		}
 		out.point = vec2f_add(out.point, out.pad);
@@ -213,7 +213,7 @@ float	dda_checker(t_vec2f pos, float angle, t_map map)
 	map.size = add_vec2(map.size, vec2(-1, -1));
 	dist_h = dda_horizontal(pos, angle, map);
 	dist_v = dda_vertical(pos, angle, map);
-	printf("%f %f\n", dist_h, dist_v);
+	/* printf("%f %f\n", dist_h, dist_v); */
 	if (dist_h < dist_v)
 		return (dist_h);
 	return (dist_v);
