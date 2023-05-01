@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 15:03:57 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/01 21:44:05 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,12 +112,12 @@ void	update_wall_distance(t_screen *screen)
 	float	pad = 60.0 / screen->size.x;
 
 	data = screen->data;
-	screen->size.x = 1;
+	/* screen->size.x = 1; */
 	index = 0;
 	while (index < screen->size.x)
 	{
-//		angle = (data->player.view - 30) + (pad * index);
-		angle = (data->player.view) + (pad * index);
+//		angle = (data->player.view) + (pad * index);
+		angle = (data->player.view - 30) + (pad * index);
 		data->walls[index].distance = dda_checker(data->player.pos, angle, data->map, screen);
 		data->walls[index].angle = angle;
 		index += 1;
@@ -127,9 +127,11 @@ void	update_wall_distance(t_screen *screen)
 void	draw_image(t_screen *screen)
 {
 	t_data	*data;
-	float	wall;
+	float	dist_to_wall;
+	int wall_height;
 	int		index;
 	float	pad = 60.0 / screen->size.x;
+	float projection_plane_dist = (screen->size.x / 2) / tan(deg_to_rad(30));
 
 	data = screen->data;
 	index = 0;
@@ -137,18 +139,19 @@ void	draw_image(t_screen *screen)
 	update_wall_distance(screen);
 	while (index < screen->size.x)
 	{
-		wall = data->walls[index].distance;
-		wall *= cosf(deg_to_rad(-30 + (index * pad))); //fish_eye correcteur
-		wall = 1 / wall * DIST;
+		dist_to_wall = data->walls[index].distance;
+		wall_height *= cosf(deg_to_rad(-30 + (index * pad))); //fish_eye correcteur
+		wall_height = 64 / dist_to_wall * projection_plane_dist;
+		/* printf("wall_height: %d\n", wall_height); */
 		image_put_line(screen->img,
-			(t_pixel){.coord = (t_vec2){index, screen->center.y + (wall / 2)}, .color.raw = 0xFFFF00},
-			(t_pixel){.coord = (t_vec2){index, screen->center.y - (wall / 2)}, .color.raw = 0x00FFFF});
+			(t_pixel){.coord = (t_vec2){index, screen->center.y + (wall_height / 2)}, .color.raw = 0xFFFF00},
+			(t_pixel){.coord = (t_vec2){index, screen->center.y - (wall_height / 2)}, .color.raw = 0x00FFFF});
 		index += 1;
 	}
-	update_minimap(screen);
+	/* update_minimap(screen); */
 
 
-	image_put_to_image(data->dda_debugger, data->mini_map);
+	/* image_put_to_image(data->dda_debugger, data->mini_map); */
 	image_put_to_image(data->mini_map, screen->img);
 //	image_put_to_image(data->dda_debugger, screen->img);
 //	mlx_string_put(screen->mlx->mlx, screen->mlx->win, 200, 200, 0, "hello world");
