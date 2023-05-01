@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 14:40:35 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/01 21:06:28 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,16 @@
 # include "screen.h"
 # include "image.h"
 # include <math.h>
+# include "str.h"
+
+# define TILE_SIZE 64
+# define FOV 60
+# define HALF_FOV 30
 
 typedef struct s_map {
 	char	**data;
 	t_vec2	size;
+	t_vec2  world_size;
 }	t_map;
 
 typedef struct s_player {
