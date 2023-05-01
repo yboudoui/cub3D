@@ -6,34 +6,11 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 14:22:47 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/30 18:15:28 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/01 14:45:34 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-/*
-static bool	update_control(t_screen *screen)
-{
-	if (screen->mlx->event.mouse.scrol_up)
-	if (screen->mlx->event.mouse.scrol_down)
-	screen->mlx->event.mouse.scrol_up = false;
-	screen->mlx->event.mouse.scrol_down = false;
-	return (true);
-}
-*/
-
-/*
-static bool	update_scrol(t_screen *screen)
-{
-	if (screen->mlx->event.mouse.scrol_up)
-	if (screen->mlx->event.mouse.scrol_down)
-	if (screen->pad < 1.0f)
-	screen->mlx->event.mouse.scrol_up = false;
-	screen->mlx->event.mouse.scrol_down = false;
-	return (true);
-}
-*/
 
 float	wrap_angle(float angle_deg)
 {
@@ -45,44 +22,70 @@ float	wrap_angle(float angle_deg)
 	return (angle_mod);
 }
 
+t_vec2f	vec2f_normalize(t_vec2f v)
+{
+	float	dist;
+
+	dist = vec2f_dist((t_vec2f){0,0}, v);
+	return ((t_vec2f){
+		.x = v.x / dist,
+		.y = v.y / dist,
+	});
+}
+
+t_vec2f	vec2f_scale(t_vec2f v, float scale)
+{
+	return ((t_vec2f){
+		.x = v.x * scale,
+		.y = v.y * scale,
+	});
+}
+
 bool	update_keyboard(t_screen *screen)
 {
 	t_data	*data;
-	
+	bool	m;
+	t_vec2f	move;
+
+	move = (t_vec2f){0, 0};
+	m = false;
 	data = screen->data;
 	if (screen->mlx->event.keyboard.move_forward)
 	{
-		data->player.pos.x += cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
-		data->player.pos.y += sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
+		move.x += cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.y += sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		m = true;
 	}
 	if (screen->mlx->event.keyboard.move_backward)
-{
-	data->player.pos.x -= cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
-	data->player.pos.y -= sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
-}
-
-if (screen->mlx->event.keyboard.move_left)
-{
-	data->player.pos.x += sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
-	data->player.pos.y -= cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
-}
-
-if (screen->mlx->event.keyboard.move_right)
-{
-	data->player.pos.x -= sinf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
-	data->player.pos.y += cosf(data->player.view * M_PI / 180.0) * data->player.mouse_speed;
-}
-
-if (screen->mlx->event.keyboard.look_left)
-{
-	data->player.view -= data->player.mouse_speed;
-}
-
-if (screen->mlx->event.keyboard.look_right)
-{
-	data->player.view += data->player.mouse_speed;
-}
-
+	{
+		move.x -= cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.y -= sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		m = true;
+	}
+	if (screen->mlx->event.keyboard.move_left)
+	{
+		move.x += sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.y -= cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		m = true;
+	}
+	
+	if (screen->mlx->event.keyboard.move_right)
+	{
+		move.x -= sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.y += cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		m = true;
+	}
+	if (m)
+	{
+		move = vec2f_normalize(move);
+		move = vec2f_scale(move, 0.01);
+		data->player.pos = vec2f_add(data->player.pos, move);
+		m = false;
+	}
+	if (screen->mlx->event.keyboard.look_left)
+		data->player.view -= data->player.mouse_speed;
+	if (screen->mlx->event.keyboard.look_right)
+		data->player.view += data->player.mouse_speed;
 	return (true);
 }
 

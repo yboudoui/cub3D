@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:17:12 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/27 16:06:21 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:04:12 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,17 +62,46 @@ inline void	image_put_pixel(t_image *img, t_pixel pixel)
 	*(unsigned int *)dst = pixel.color.raw;
 }
 
+inline t_pixel	image_get_pixel(t_image *img, t_vec2 pos)
+{
+	t_pixel	out;
+	char	*dst;
+
+	out = (t_pixel){0};
+	if (pos.x < 0 || pos.x >= img->size.x)
+		return (out);
+	if (pos.y < 0 || pos.y >= img->size.y)
+		return (out);
+	dst = img->addr;
+	pos.x *= (img->bits_per_pixel / 8);
+	pos.y *= (img->line_length);
+	dst += (int)(pos.y + pos.x);
+	out.color.raw = *(unsigned int *)dst;
+	return (out);
+}
+
 inline void	image_put_to_image(t_image *src, t_image *dest)
 {
-	int	index;
+	t_pixel	index;
+	t_pixel	tmp;
 
-	index = 0;
-	while (index < src->size.y)
+	index = (t_pixel){
+		.coord = (t_vec2){-1, -1},
+	};
+	while (++index.coord.y < src->size.y)
 	{
-		ft_memcpy(
-				&dest->addr[index * dest->line_length],
-				&src->addr[index * src->line_length],
-				src->line_length);
-		index += 1;
+		index.coord.x = -1;
+		while (++index.coord.x < src->size.x)
+		{
+			tmp = image_get_pixel(src, index.coord);
+	//		printf("%d\n", tmp.color.chanel[TRANSPARENCY]);
+			index.color = interpolate_color(
+				image_get_pixel(dest, index.coord).color,
+	0.5,//			(float)(255.0 / tmp.color.chanel[TRANSPARENCY]),
+				tmp.color
+			);
+//			index.color.chanel[TRANSPARENCY] = 0;
+			image_put_pixel(dest, index);
+		}
 	}
 }
