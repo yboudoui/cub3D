@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:37:16 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/27 16:06:27 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/01 14:24:25 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	down_sample(t_image *in, t_image *out);
 t_image	*image_new(t_mlx *data, t_vec2 size);
 void	delete_image(t_image *img);
 void	image_clear(t_image *img, t_color color);
+
+t_pixel	image_get_pixel(t_image *img, t_vec2 pos);
 
 void	image_put_pixel(t_image *img, t_pixel pixel);
 void	image_put_line(t_image *img, t_pixel start, t_pixel end);

@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/27 17:26:19 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/01 14:40:35 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_wall {
 typedef struct s_data {
 	t_map		map;
 	t_image		*mini_map;
+	t_image		*dda_debugger;
 	t_player	player;
 	t_wall		*walls;
 }	t_data;
@@ -44,6 +45,6 @@ typedef struct s_data {
 void	draw_image(t_screen *data);
 bool	update_state(t_screen *data);
 
-float	dda_checker(t_vec2f pos, float angle, t_map map);
+float	dda_checker(t_vec2f pos, float angle, t_map map, t_screen *screen);
 #include <stdio.h>
 #endif

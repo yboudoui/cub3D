@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/30 16:51:58 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/01 15:08:42 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,22 +112,27 @@ float	dda_checker(t_vec2f pos, float angle, t_map map)
 }
 */
 
-static float	dda_horizontal(t_vec2f pos, float angle, t_map map)
+static float	dda_horizontal(t_vec2f pos, float angle, t_map map, t_screen *screen)
 {
 	t_dda	out;
 	float	len;
 	t_vec2	p;
 
+	t_quad	block;
+
+	t_data	*data;
+	data = screen->data;
+
 	if (angle == 180 || angle == 0)
 		return (INFINITY);
 	if (180 > angle)// && angle > 0)
 	{
-		out.point.y = round(pos.y) - 1;
+		out.point.y = round(pos.y);
 		out.pad.y = -1;
 	}
 	else
 	{
-		out.point.y = round(pos.y);
+		out.point.y = round(pos.y) - 1;
 		out.pad.y = 1;
 	}
 	angle =  tanf(angle * M_PI / 180.0);
@@ -140,9 +145,13 @@ static float	dda_horizontal(t_vec2f pos, float angle, t_map map)
 	};
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
+		block = rectangle(mul_vec2(p, (t_vec2){16, 16}), (t_vec2){3, 3}, (t_color){.raw = 0});
+		image_put_empty_quad(data->dda_debugger, block);
+
 		len = vec2f_dist(out.point, pos);
 		if (map.data[p.y][p.x] == '1')
 		{
+
 //			printf("[%d %d] = %c\n", p.x, p.y, map.data[p.y][p.x]);
 			return(len);
 		}
@@ -155,11 +164,16 @@ static float	dda_horizontal(t_vec2f pos, float angle, t_map map)
 	return (INFINITY);
 }
 
-static float	dda_vertical(t_vec2f pos, float angle, t_map map)
+static float	dda_vertical(t_vec2f pos, float angle, t_map map, t_screen *screen)
 {
 	t_dda	out;
 	float	len;
 	t_vec2	p;
+
+	t_data	*data;
+	t_quad	block;
+	data = screen->data;
+
 
 	if (270 == angle || angle == 90)
 		return (INFINITY);
@@ -189,6 +203,8 @@ static float	dda_vertical(t_vec2f pos, float angle, t_map map)
 
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
+		block = rectangle(mul_vec2(p, (t_vec2){16, 16}), (t_vec2){3, 3}, (t_color){.raw = 0});
+		image_put_empty_quad(data->dda_debugger, block);
 		len = vec2f_dist(out.point, pos);
 		if (map.data[p.y][p.x] == '1')
 		{
@@ -204,18 +220,21 @@ static float	dda_vertical(t_vec2f pos, float angle, t_map map)
 	return (INFINITY);
 }
 
-float	dda_checker(t_vec2f pos, float angle, t_map map)
+float	dda_checker(t_vec2f pos, float angle, t_map map, t_screen *screen)
 {
 	float	dist_h;
 	float	dist_v;
+	t_data	*data;
+
+	data = screen->data;
 
 //	printf("%f\n", angle);
 	map.size = add_vec2(map.size, vec2(-1, -1));
-	dist_h = dda_horizontal(pos, angle, map);
-	dist_v = dda_vertical(pos, angle, map);
+	image_clear(data->dda_debugger, (t_color){.raw = 0xFFFFFFFF});
+	dist_h = dda_horizontal(pos, angle, map, screen);
+	dist_v = dda_vertical(pos, angle, map, screen);
 	/* printf("%f %f\n", dist_h, dist_v); */
 	if (dist_h < dist_v)
 		return (dist_h);
 	return (dist_v);
 }
-

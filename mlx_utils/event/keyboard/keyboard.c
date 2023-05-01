@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 06:46:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/30 17:57:05 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/01 13:09:09 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int	key_press(int keycode, t_event_keyboard *event)
 {
-	printf("keypress = %d\n", keycode);
+//	printf("keypress = %d\n", keycode);
 	if (keycode == 65293)
 		event->enter = true;
 	if (keycode == 65307)
