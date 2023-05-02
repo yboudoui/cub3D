@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:17:12 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 15:04:12 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 19:33:34 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,22 @@ t_image	*image_new(t_mlx *data, t_vec2 size)
 			&out->line_length,
 			&out->endian);
 	image_clear(out, (t_color){.raw = 0x000000});
+	return (out);
+}
+
+t_image	*image_new_xpm(t_mlx *data, char *path)
+{
+	t_image	*out;
+
+	out = ft_calloc(1, sizeof(t_image));
+	if (NULL == out)
+		return (NULL);
+	out->mlx = data->mlx;
+	out->data = mlx_xpm_file_to_image(out->mlx, path, &out->size.x, &out->size.y);
+	out->addr = mlx_get_data_addr(out->data,
+			&out->bits_per_pixel,
+			&out->line_length,
+			&out->endian);
 	return (out);
 }
 
@@ -105,3 +121,21 @@ inline void	image_put_to_image(t_image *src, t_image *dest)
 		}
 	}
 }
+
+/*
+
+inline void	image_put_to_image(t_image *src, t_image *dest)
+{
+	int	index;
+
+	index = 0;
+	while (index < src->size.y)
+	{
+		ft_memcpy(
+				&dest->addr[index * dest->line_length],
+				&src->addr[index * src->line_length],
+				src->line_length);
+		index += 1;
+	}
+}
+*/

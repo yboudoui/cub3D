@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 17:19:45 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:38:05 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char *map[] = {
 "1000000001",
 "1000000001",
 "1000001001",
-"1000001001",
+"1000101001",
 "1000001001",
 "1000001001",
 "1000111111",
@@ -52,15 +52,16 @@ int	main(void)
 	data.map = (t_map){(char **)map, vec2(10, 12)};
 	data.mini_map = image_new(screen->mlx, add_vec2(mul_vec2(data.map.size, vec2(16, 16)), vec2(1, 1)));
 	data.dda_debugger = image_new(screen->mlx, add_vec2(mul_vec2(data.map.size, vec2(16, 16)), vec2(1, 1)));
+	data.texture.north = image_new_xpm(screen->mlx, "./texture/wall.xpm");
 	data.player = (t_player){
-			.pos = (t_vec2f){5.5, 6.2},
+			.pos = (t_vec2f){1, 1.2},
 			//.view = 358.5,
-			.view = 359,
+			.view = 230,
 			.fov = 60,
 			.mouse_speed = 0.5
 			/* .mouse_speed = 56 */
 		};
-	data.walls = ft_calloc(screen->size.x, sizeof(t_wall));
+	data.walls = ft_calloc(screen->size.x, sizeof(t_dda));
 	screen->data = &data;
 	mlx_loop_hook(screen->mlx->mlx, draw, screen);
 	mlx_loop(screen->mlx->mlx);

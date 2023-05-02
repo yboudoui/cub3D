@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:37:16 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 13:52:33 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:48:20 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_quad {
 void	down_sample(t_image *in, t_image *out);
 
 t_image	*image_new(t_mlx *data, t_vec2 size);
+t_image	*image_new_xpm(t_mlx *data, char *path);
+
 void	delete_image(t_image *img);
 void	image_clear(t_image *img, t_color color);
 
