@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:22:41 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 14:45:33 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:56:04 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,6 @@ t_vec2	vec2f_floor(t_vec2f v);
 bool	vec2f_in_range(t_vec2f v, t_vec2f min, t_vec2f max);
 t_vec2f	vec2f_add(t_vec2f a, t_vec2f b);
 float	vec2f_dist(t_vec2f a, t_vec2f b);
+t_vec2f	vec2f_normalize(t_vec2f v);
+t_vec2f	vec2f_scale(t_vec2f v, float scale);
 #endif

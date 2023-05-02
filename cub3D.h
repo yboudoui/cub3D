@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 14:40:35 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:22:59 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct s_data {
 void	draw_image(t_screen *data);
 bool	update_state(t_screen *data);
 
+float	deg_to_rad(float deg);
+float	wrap_angle(float angle_deg);
 float	dda_checker(t_vec2f pos, float angle, t_map map, t_screen *screen);
 #include <stdio.h>
 #endif

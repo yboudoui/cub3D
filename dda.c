@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 15:08:42 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:32:04 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,49 +112,55 @@ float	dda_checker(t_vec2f pos, float angle, t_map map)
 }
 */
 
+static void		dda_cross_debug(t_screen *screen, t_vec2f cross, t_color color, int size)
+{
+	t_quad	block;
+	t_vec2	pos;
+	t_data	*data;
+
+	data = screen->data;
+	pos = (t_vec2){
+		.x = (int)(cross.x * 16) - 1,
+		.y = (int)(cross.y * 16) - 1,
+	};
+	block = rectangle(pos, (t_vec2){size, size}, color);
+	image_put_empty_quad(data->dda_debugger, block);
+}
+
 static float	dda_horizontal(t_vec2f pos, float angle, t_map map, t_screen *screen)
 {
 	t_dda	out;
 	float	len;
 	t_vec2	p;
 
-	t_quad	block;
-
-	t_data	*data;
-	data = screen->data;
-
-	if (angle == 180 || angle == 0)
+	if (angle == 0 || angle == 180)
 		return (INFINITY);
-	if (180 > angle)// && angle > 0)
+	if (angle > 0 && angle < 180)
 	{
-		out.point.y = round(pos.y);
+		out.point.y = floor(pos.y) - pos.y;
 		out.pad.y = -1;
 	}
 	else
 	{
-		out.point.y = round(pos.y) - 1;
+		out.point.y = 1 - (pos.y - floor(pos.y));
 		out.pad.y = 1;
 	}
-	angle =  tanf(angle * M_PI / 180.0);
-	out.point.x = pos.x + (pos.y - out.point.y) / angle;
-	out.pad.x = 1 / angle;
+	out.pad.x = out.pad.y / tanf(deg_to_rad(angle));
+	out.point.x = out.point.y / tanf(deg_to_rad(angle));
 
+	out.point.x += pos.x;
+	out.point.y += pos.y;
+	dda_cross_debug(screen, out.point, (t_color){.raw = 0x0}, 5);
 	p = (t_vec2){
-		.x = (int)out.point.x,
-		.y = (int)out.point.y,
+		.x = (int)(out.point.x),
+		.y = (int)(out.point.y),
 	};
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
-		block = rectangle(mul_vec2(p, (t_vec2){16, 16}), (t_vec2){3, 3}, (t_color){.raw = 0});
-		image_put_empty_quad(data->dda_debugger, block);
-
 		len = vec2f_dist(out.point, pos);
-		if (map.data[p.y][p.x] == '1')
-		{
-
-//			printf("[%d %d] = %c\n", p.x, p.y, map.data[p.y][p.x]);
+		dda_cross_debug(screen, out.point, (t_color){.raw = 0xFF0000}, 3);
+		if (map.data[p.y - (angle > 0 && angle < 180)][p.x] == '1')
 			return(len);
-		}
 		out.point = vec2f_add(out.point, out.pad);
 		p = (t_vec2){
 			.x = (int)out.point.x,
@@ -170,47 +176,34 @@ static float	dda_vertical(t_vec2f pos, float angle, t_map map, t_screen *screen)
 	float	len;
 	t_vec2	p;
 
-	t_data	*data;
-	t_quad	block;
-	data = screen->data;
-
-
 	if (270 == angle || angle == 90)
 		return (INFINITY);
-	if (270 > angle && angle > 90)
+	if (angle > 90 && angle < 270)
 	{
-		out.point.x = round(pos.x) - 1;
-		out.pad.x = -1;
+		out.point.x = 1 - (pos.x - floor(pos.x));
+		out.pad.x = +1;
 	}
 	else
 	{
-		out.point.x = round(pos.x);
-		out.pad.x = 1;
+		out.point.x = floor(pos.x) - pos.x;
+		out.pad.x = -1;
 	}
-	angle =  tanf(angle * M_PI / 180.0);
-	out.point.y = pos.y + (pos.x - out.point.x) * angle;
-	out.pad.y = 1 * angle;
+	out.point.y = out.point.x * tanf(deg_to_rad(angle));
+	out.pad.y = out.pad.x * tanf(deg_to_rad(angle));
 
+	out.point.x += pos.x;
+	out.point.y += pos.y;
 	p = (t_vec2){
 		.x = (int)out.point.x,
 		.y = (int)out.point.y,
 	};
-
-//	printf("_____________\n");
-//	printf("%f %f\n", out.point.x, out.point.y);
-//	printf("%d %d\n", p.x, p.y);
-//	printf("%f %f\n", out.pad.x, out.pad.y);
-
+	dda_cross_debug(screen, out.point, (t_color){.raw = 0x0}, 5);
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
-		block = rectangle(mul_vec2(p, (t_vec2){16, 16}), (t_vec2){3, 3}, (t_color){.raw = 0});
-		image_put_empty_quad(data->dda_debugger, block);
+		dda_cross_debug(screen, out.point, (t_color){.raw = 0x00FF00}, 3);
 		len = vec2f_dist(out.point, pos);
-		if (map.data[p.y][p.x] == '1')
-		{
-			/* printf("[%d %d] = %c\n", p.x, p.y, map.data[p.y][p.x]); */
+		if (map.data[p.y][p.x - !(angle > 90 && angle < 270)] == '1')
 			return(len);
-		}
 		out.point = vec2f_add(out.point, out.pad);
 		p = (t_vec2){
 			.x = (int)out.point.x,
@@ -227,8 +220,15 @@ float	dda_checker(t_vec2f pos, float angle, t_map map, t_screen *screen)
 	t_data	*data;
 
 	data = screen->data;
+/*
+	static float a = 0;
 
-//	printf("%f\n", angle);
+	if (data->player.view != a)
+	{
+		printf("%f\n", data->player.view);
+		a = data->player.view;
+	}
+*/
 	map.size = add_vec2(map.size, vec2(-1, -1));
 	image_clear(data->dda_debugger, (t_color){.raw = 0xFFFFFFFF});
 	dist_h = dda_horizontal(pos, angle, map, screen);

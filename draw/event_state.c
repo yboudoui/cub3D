@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/26 14:22:47 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 14:45:34 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:14:40 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,12 @@ float	wrap_angle(float angle_deg)
 {
 	float	angle_mod;
 
+//	if (angle_deg > 360)
+//		return (angle_deg - 360);
 	angle_mod = fmod(angle_deg, 360.0);
 	if (angle_mod < 0)
 		angle_mod += 360.0;
 	return (angle_mod);
-}
-
-t_vec2f	vec2f_normalize(t_vec2f v)
-{
-	float	dist;
-
-	dist = vec2f_dist((t_vec2f){0,0}, v);
-	return ((t_vec2f){
-		.x = v.x / dist,
-		.y = v.y / dist,
-	});
-}
-
-t_vec2f	vec2f_scale(t_vec2f v, float scale)
-{
-	return ((t_vec2f){
-		.x = v.x * scale,
-		.y = v.y * scale,
-	});
 }
 
 bool	update_keyboard(t_screen *screen)
@@ -52,27 +35,27 @@ bool	update_keyboard(t_screen *screen)
 	data = screen->data;
 	if (screen->mlx->event.keyboard.move_forward)
 	{
-		move.x += cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
-		move.y += sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
-		m = true;
-	}
-	if (screen->mlx->event.keyboard.move_backward)
-	{
 		move.x -= cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
 		move.y -= sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
 		m = true;
 	}
+	if (screen->mlx->event.keyboard.move_backward)
+	{
+		move.x += cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.y += sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		m = true;
+	}
 	if (screen->mlx->event.keyboard.move_left)
 	{
-		move.x += sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
-		move.y -= cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.x -= sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.y += cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
 		m = true;
 	}
 	
 	if (screen->mlx->event.keyboard.move_right)
 	{
-		move.x -= sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
-		move.y += cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.x += sinf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
+		move.y -= cosf(data->player.view * M_PI / 180.0);// * data->player.mouse_speed;
 		m = true;
 	}
 	if (m)
@@ -86,6 +69,7 @@ bool	update_keyboard(t_screen *screen)
 		data->player.view -= data->player.mouse_speed;
 	if (screen->mlx->event.keyboard.look_right)
 		data->player.view += data->player.mouse_speed;
+	data->player.view = wrap_angle(data->player.view);
 	return (true);
 }
 
@@ -104,6 +88,15 @@ bool	update_state(t_screen *screen)
 //		screen->mlx->event.mouse.delta.x = 0;
 		data->player.view = wrap_angle(data->player.view);
 	}
+/*
+	static float a = 0;
+
+	if (data->player.view != a)
+	{
+		printf("%f\n", data->player.view);
+		a = data->player.view;
+	}
+*/
 
 /*
 	if (screen->mlx->event.keyboard.enter)

@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:27:10 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 18:29:57 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 13:56:07 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,23 @@ float	vec2f_dist(t_vec2f a, t_vec2f b)
 	dist.x = fabsf(a.x - b.x);
 	dist.y = fabsf(a.y - b.y);
 	return (hypotf(dist.x, dist.y));
+}
+
+t_vec2f	vec2f_normalize(t_vec2f v)
+{
+	float	dist;
+
+	dist = vec2f_dist((t_vec2f){0,0}, v);
+	return ((t_vec2f){
+		.x = v.x / dist,
+		.y = v.y / dist,
+	});
+}
+
+t_vec2f	vec2f_scale(t_vec2f v, float scale)
+{
+	return ((t_vec2f){
+		.x = v.x * scale,
+		.y = v.y * scale,
+	});
 }
