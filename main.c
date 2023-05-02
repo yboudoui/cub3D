@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 21:34:36 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/02 15:29:17 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	main(void)
 	data.dda_debugger = image_new(screen->mlx, add_vec2(mul_vec2(data.map.size, vec2(16, 16)), vec2(1, 1)));
 	data.player = (t_player){
 			.pos = (t_vec2f){5, 3},
+			.tiled_pos = (t_vec2f){5 * 64, 3 * 64},
 			.view = 280.397461,
 			.fov = 60,
 			.mouse_speed = 0.5

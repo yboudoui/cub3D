@@ -6,16 +6,12 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 21:27:11 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/02 16:04:59 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-typedef struct s_dda {
-	t_vec2f	point;
-	t_vec2f	pad;
-}	t_dda;
 /*
 static t_dda	dda_horizontal(t_vec2f pos, float angle)
 {
@@ -187,7 +183,7 @@ bool is_wall(t_map map, t_dda dda)
 	return (map.data[grid_y][grid_x] == '1');
 }
 
-float euclidean_dist_to_wall(t_dda dda, t_vec2 player_pos) // euclidean distance can be used in all direction
+float euclidean_dist_to_wall(t_dda dda, t_vec2f player_pos) // euclidean distance can be used in all direction
 {
 	float x_diff;
 	float y_diff;
@@ -207,33 +203,26 @@ t_vec2 pl_gridpos_to_worldpos(t_vec2f player_pos)
 
 static float	dda_vertical(t_vec2f player_pos, float angle, t_map map, t_screen *screen)
 {
-	// karim version
 	t_dda	out;
-	t_vec2	p;
-	t_vec2	p_world_pos;
-	t_data	*data;
+	t_data *data;
 	/* t_quad	block; */
 	data = screen->data;
 
 
-	p_world_pos = pl_gridpos_to_worldpos(player_pos);
+	/* p_world_pos = pl_gridpos_to_worldpos(player_pos); */
 	/* printf("p_world_pos = [%d %d]\n", p_world_pos.x, p_world_pos.y); */
 	if (player_is_facing_right(angle))
 	{
-		out.point.x = (p_world_pos.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
+		out.point.x = (player_pos.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
 		out.pad.x = TILE_SIZE;
 	}
 	else
 	{
-		out.point.x = (p_world_pos.x / TILE_SIZE) * TILE_SIZE - 1;
+		out.point.x = (player_pos.x / TILE_SIZE) * TILE_SIZE - 1;
 		out.pad.x = -TILE_SIZE;
 	}
-	out.point.y = p_world_pos.y + (p_world_pos.x - out.point.x) * tanf(angle_to_rad(angle));
+	out.point.y = player_pos.y + (player_pos.x - out.point.x) * tanf(angle_to_rad(angle));
 	out.pad.y = TILE_SIZE * tanf(angle_to_rad(angle));
-	p = (t_vec2){
-		.x = (int)out.point.x,
-		.y = (int)out.point.y,
-	};
 	while (!is_wall(map, out))
 	{
 		/* printf("player.x = %d, player.y = %d\n", p_world_pos.x, p_world_pos.y); */
@@ -241,12 +230,8 @@ static float	dda_vertical(t_vec2f player_pos, float angle, t_map map, t_screen *
 		/* image_put_empty_quad(data->dda_debugger, block); */
 		out.point.x = out.point.x + out.pad.x;
 		out.point.y = out.point.y + out.pad.y;
-		p = (t_vec2){
-			.x = (int)out.point.x,
-				.y = (int)out.point.y,
-		};
 	}
-	return (euclidean_dist_to_wall(out, p_world_pos));
+	return (euclidean_dist_to_wall(out, player_pos));
 }
 
 bool player_is_facing_up(float angle)
@@ -262,25 +247,22 @@ bool player_is_facing_left(float angle)
 static float dda_horizontal(t_vec2f player_pos, float angle, t_map map, t_screen *screen)
 {
 	t_dda	out;
-	t_vec2	p;
-	t_vec2	p_world_pos;
 	t_data	*data;
 	/* t_quad	block; */
 	data = screen->data;
 
-	p_world_pos = pl_gridpos_to_worldpos(player_pos);
 	/* printf("p_world_pos = [%d %d]\n", p_world_pos.x, p_world_pos.y); */
 	if (player_is_facing_up(angle))
 	{
-		out.point.y = (p_world_pos.y / TILE_SIZE) * TILE_SIZE - 1;
+		out.point.y = (player_pos.y / TILE_SIZE) * TILE_SIZE - 1;
 		out.pad.y = -TILE_SIZE;
 	}
 	else
 	{
-		out.point.y = (p_world_pos.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
+		out.point.y = (player_pos.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE;
 		out.pad.y = TILE_SIZE;
 	}
-	out.point.x = p_world_pos.x + (p_world_pos.y - out.point.y) / tanf(angle_to_rad(angle));
+	out.point.x = player_pos.x + (player_pos.y - out.point.y) / tanf(angle_to_rad(angle));
 	out.pad.x = TILE_SIZE / tanf(angle_to_rad(angle));
 
 	if (player_is_facing_left(angle))
@@ -288,10 +270,6 @@ static float dda_horizontal(t_vec2f player_pos, float angle, t_map map, t_screen
 		out.pad.x = -out.pad.x;
 	}
 
-	p = (t_vec2){
-		.x = (int)out.point.x,
-		.y = (int)out.point.y,
-	};
 	while (!is_wall(map, out))
 	{
 		/* printf("player.x = %f, player.y = %f\n", player_pos.x, player_pos.y); */
@@ -299,12 +277,8 @@ static float dda_horizontal(t_vec2f player_pos, float angle, t_map map, t_screen
 		/* image_put_empty_quad(data->dda_debugger, block); */
 		out.point.x = out.point.x + out.pad.x;
 		out.point.y = out.point.y + out.pad.y;
-		p = (t_vec2){
-			.x = (int)out.point.x,
-			.y = (int)out.point.y,
-		};
 	}
-	return (euclidean_dist_to_wall(out, p_world_pos));
+	return (euclidean_dist_to_wall(out, player_pos));
 }
 
 /* static float	dda_vertical(t_vec2f pos, float angle, t_map map, t_screen *screen) */

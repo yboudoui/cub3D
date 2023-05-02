@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/01 21:06:28 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/02 17:13:16 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_map {
 
 typedef struct s_player {
 	t_vec2f	pos;
+	t_vec2f tiled_pos;
 	float	view;
 	float	fov;
 	float	mouse_speed;
@@ -48,8 +49,15 @@ typedef struct s_data {
 	t_wall		*walls;
 }	t_data;
 
+typedef struct s_dda {
+	t_vec2f	point;
+	t_vec2f	pad;
+}	t_dda;
+
 void	draw_image(t_screen *data);
 bool	update_state(t_screen *data);
+bool	is_wall(t_map map, t_dda dda);
+float angle_to_rad(float angle);
 
 float	dda_checker(t_vec2f pos, float angle, t_map map, t_screen *screen);
 #include <stdio.h>
