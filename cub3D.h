@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 17:22:59 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/02 20:06:28 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,18 @@
 # include "screen.h"
 # include "image.h"
 # include <math.h>
+
+typedef enum e_boundarie {
+	VERTICAL,
+	HORIZONTAL,
+}	t_boundarie;
+
+typedef struct s_dda {
+	t_vec2f		point;
+	float		angle;
+	float		len;
+	t_boundarie	boundarie;
+}	t_dda;
 
 typedef struct s_map {
 	char	**data;
@@ -29,17 +41,17 @@ typedef struct s_player {
 	float	mouse_speed;
 }	t_player;
 
-typedef struct s_wall {
-	float	distance;
-	float	angle;
-}	t_wall;
+typedef struct s_texture {
+	t_image	*north;
+}	t_texture;
 
 typedef struct s_data {
 	t_map		map;
 	t_image		*mini_map;
 	t_image		*dda_debugger;
 	t_player	player;
-	t_wall		*walls;
+	t_dda		*walls;
+	t_texture	texture;
 }	t_data;
 
 void	draw_image(t_screen *data);
@@ -47,6 +59,7 @@ bool	update_state(t_screen *data);
 
 float	deg_to_rad(float deg);
 float	wrap_angle(float angle_deg);
-float	dda_checker(t_vec2f pos, float angle, t_map map, t_screen *screen);
+
+t_dda	dda_checker(t_vec2f pos, float angle, t_map map, t_screen *screen);
 #include <stdio.h>
 #endif
