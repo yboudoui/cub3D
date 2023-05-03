@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:00:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 17:01:59 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/03 20:16:53 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,16 @@ bool parse_texture_west(t_list *head, t_config *config);
 bool parse_texture_west(t_list *head, t_config *config);
 bool parse_texture(t_list *head, t_config *config);
 
+// Color parsing
+char *get_color_path(char *line, char *color_name);
+bool parse_color_path(char *color_path, t_color *trgb_color, bool *set_color);
+bool parse_floor_color(t_list *head, t_config *config);
+bool parse_ceiling_color(t_list *head, t_config *config);
+bool parse_colors(t_list *head, t_config *config);
+
+
+// Debug
+void print_line(void *str);
+void print_texture(t_config *config);
+void print_colors(t_config *config);
 #endif

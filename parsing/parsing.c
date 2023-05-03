@@ -6,12 +6,12 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:08:43 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 17:23:07 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/03 22:12:58 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
 #include "parsing.h"
+#include <stdio.h>
 
 // Initialize the configuration structure with default values
 void	init_config(t_config *config)
@@ -31,18 +31,6 @@ void	init_config(t_config *config)
 	return ;
 }
 
-// Check if the configuration is valid
-// If not, return an error message
-// If yes, return NULL
-// The configuration is valid if:
-// - all the required fields are filled
-// - the map is surrounded by walls
-// - the map only contains valid characters
-// - the map contains only one player
-// - the player is looking in a valid direction
-// - the map is rectangular
-// - the map is at least 3x3
-// - the map is closed
 bool ends_with(char *str, char *end)
 {
 	int	str_len;
@@ -90,148 +78,108 @@ bool wrong_chars(char *str)
 	return (true);
 }
 
-
-char *get_color_path(char *line, char *color_name)
+t_list *parse_submap(t_list *head)
 {
-	int	i;
+	t_list *tmp;
+	t_list *out;
+	char *str;
+	int i;
 
-	i = 0;
-	while (line[i])
+	tmp = head;
+	out = NULL;
+	while (tmp)
 	{
-		if (ft_isspace(line[i]))
-		{
+		i = 0;
+		str = tmp->content;
+		while (str[i] == ' ' || str[i] == '\t')
 			i++;
-			continue;
-		}
-		if (ft_strncmp(line + i, color_name, 1) == 0)
-		{
-			i++;
-			while (line[i] && ft_isspace(line[i]))
-				i++;
-			return (ft_strdup(line + i));
-		}
-		i++;
+		if (str[i] && (str[i] == '1' || str[i] == '0'))
+			break ;
+		tmp = tmp->next;
 	}
-	return (NULL);
-}
-
-bool parse_color_path(char *color_path, t_config *config)
-{
-	int	i;
-	int	j;
-	int	color[3];
-
-	i = 0;
-	j = 0;
-	while (color_path[i])
+	while (tmp)
 	{
-		if (ft_isdigit(color_path[i]))
-		{
-			color[j] = ft_atoi(color_path + i);
-			j++;
-			while (ft_isdigit(color_path[i]))
-				i++;
-			if (color_path[i] == ',')
-				i++;
-			else if (color_path[i] != '\0')
-				return (false);
-		}
-		else if (ft_isspace(color_path[i]))
-			i++;
-		else
-			return (false);
-	}	
-	printf("color: %d %d %d\n", color[0], color[1], color[2]);
-	if (j != 3)
-		return (false);
-	if (color[0] < 0 || color[0] > 255)
-		return (false);
-	if (color[1] < 0 || color[1] > 255)
-		return (false);
-	if (color[2] < 0 || color[2] > 255)
-		return (false);
-	/* config->floor_color.r = color[0]; */
-	/* config->floor_color.g = color[1]; */
-	/* config->floor_color.b = color[2]; */
-	config->set_floor_color = true;
-	return (true);
+		lst_add_back(&out, lst_new(tmp->content));
+		tmp = tmp->next;
+	}
+	if (!out)
+		return (NULL);
+	return (out);
 }
 
-bool parse_floor_color(t_list *head, t_config *config)
+bool parse_map_illegal_instruction(t_list *map)
 {
 	t_list *tmp;
 	char *str;
-	char *color_path;
 
-	tmp = head;
+	tmp = map;
 	while (tmp)
 	{
 		str = (char *)tmp->content;
+		if (check_texture_name(str, "NO") == true)
+			return (false);
+		if (check_texture_name(str, "SO") == true)
+			return (false);
+		if (check_texture_name(str, "WE") == true)
+			return (false);
+		if (check_texture_name(str, "EA") == true)
+			return (false);
 		if (check_texture_name(str, "F") == true)
-		{
-			color_path = get_color_path(str, "F");
-			if (color_path == NULL)
-				return (false);
-			if (parse_color_path(color_path, config) == false)
-				return (false);
-			printf("color_path: %s\n", color_path);
-			if (config->set_floor_color)
-				return (false);
-		}
+			return (false);
+		if (check_texture_name(str, "C") == true)
+			return (false);
 		tmp = tmp->next;
 	}
-	if (config->set_floor_color)
+	return (true);
+}
+
+bool parse_legal_map_characters(char c)
+{
+	if (ft_isspace(c) || c == '1' || \
+			c == '0' || c == 'N' || c == 'S' || \
+			c == 'W' || c == 'E')
 		return (true);
 	return (false);
 }
 
-/* bool parse_ceiling_color(t_list *head, t_config *config) */
-/* { */
-/* 	t_list *tmp; */
-/* 	char *str; */
-
-/* 	tmp = head; */
-/* 	while (tmp) */
-/* 	{ */
-/* 		str = (char *)tmp->content; */
-/* 		if (check_texture_name(str, "C") == true) */
-/* 		{ */
-/* 			if (config->ceiling_color) */
-/* 				return (false); */
-/* 			config->ceiling_color = get_texture_path(str, "C"); */
-/* 		} */
-/* 		tmp = tmp->next; */
-/* 	} */
-/* 	if (config->ceiling_color) */
-/* 		return (true); */
-/* 	return (false); */
-/* } */
-
-bool parse_colors(t_list *head, t_config *config)
+bool parse_map_illegal_character(t_list *map)
 {
-	if (parse_floor_color(head, config) == false)
-		return (false);
-	/* if (parse_ceiling_color(head, config) == false) */
-	/* 	return (false); */
+	t_list *tmp;
+	char *str;
+	int i;
+
+	tmp = map;
+	while (tmp)
+	{
+		i = 0;
+		str = (char *)tmp->content;
+		while (str[i])
+		{
+			if (parse_legal_map_characters(str[i]) == false)
+				return (false);
+			i++;
+		}
+		tmp = tmp->next;
+	}
 	return (true);
 }
 
 
-void print_line(void *str)
+bool parse_map(t_list *head, t_config *config)
 {
-	printf("%s", (char *)str);
-}
+	t_list *submap;
 
-void print_texture(t_config *config)
-{
-	if (config->north_texture)
-		printf("north_texture: %s\n", config->north_texture);
-	if (config->south_texture)
-		printf("south_texture: %s\n", config->south_texture);
-	if (config->west_texture)
-		printf("west_texture: %s\n", config->west_texture);
-	if (config->east_texture)
-		printf("east_texture: %s\n", config->east_texture);
+	submap = NULL;
+	submap = parse_submap(head);
+	if (parse_map_illegal_instruction(submap) == false)
+		return (false);
+	if (parse_map_illegal_character(submap) == false)
+		return (false);
+	config->map = (char **)malloc(sizeof(char *) * (lst_size(submap) + 1));
+	lst_iter(submap, print_line);
+	exit(0);
+	/* if (parse_map_size(head, config) == false) */
+	/* 	return (false); */
 }
 
 bool parser(char *filename, t_config *config)
@@ -264,6 +212,12 @@ bool parser(char *filename, t_config *config)
 		ft_error("Error\nInvalid colors\n");
 		return (false);
 	}
+	if (parse_map(head, config) == false)
+	{
+		ft_error("Error\nInvalid map\n");
+		return (false);
+	}
+	/* print_colors(config); */
 	/* print_texture(config); */
 	/* lst_iter(head, print_line); */
 	exit(0);

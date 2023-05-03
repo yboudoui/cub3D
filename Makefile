@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/03 17:24:08 by kdhrif           ###   ########.fr        #
+#    Updated: 2023/05/03 20:17:17 by kdhrif           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,6 +75,8 @@ SRCS	=\
 ./parsing/parsing.c\
 ./parsing/ft_texture_utils.c\
 ./parsing/ft_texture_parsing.c\
+./parsing/ft_colors_parsing.c\
+./parsing/parsing_debug.c\
 
 INCS	=\
 ./utils/str\
