@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/03 12:06:48 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:28:49 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_player {
 
 typedef struct s_precompute {
 	float	pad;
+	int		size;
+	int		limit[MAX_BOUNDARIE];
 	float	*tan_arr;
 }	t_precompute;
 
