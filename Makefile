@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/02 16:17:23 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/05/03 10:28:55 by kdhrif           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,6 @@ SRCS	=\
 ./utils/int_array/int_array.c\
 ./utils/get_next_line/get_next_line_utils.c\
 ./utils/get_next_line/get_next_line.c\
-./cub3D.c\
 ./main.c\
 ./mlx_utils/color/color.c\
 ./mlx_utils/vec2/vec2.c\
