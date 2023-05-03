@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 20:38:05 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:33:56 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,18 @@ int	draw(t_screen *screen)
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_screen	*screen;
 	t_data		data;
 
+	if (argc != 2)
+	{
+		ft_error("Error\nWrong number of arguments\n");
+		return (-1);
+	}
+	if (parser(argv[1], &data.config) == false)
+		return (-1);
 	screen = screen_create("cub3D", vec2(WIDTH, HEIGHT));
 	if (NULL == screen)
 		return (-2);

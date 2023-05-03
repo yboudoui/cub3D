@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 20:06:28 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:24:04 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "screen.h"
 # include "image.h"
 # include <math.h>
+# include "str.h"
+# include "parsing.h"
 
 typedef enum e_boundarie {
 	VERTICAL,
@@ -52,6 +54,7 @@ typedef struct s_data {
 	t_player	player;
 	t_dda		*walls;
 	t_texture	texture;
+	t_config config;
 }	t_data;
 
 void	draw_image(t_screen *data);

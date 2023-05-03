@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/03 10:28:55 by kdhrif           ###   ########.fr        #
+#    Updated: 2023/05/03 17:24:08 by kdhrif           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,12 @@ SRCS	=\
 ./utils/str/ft_strlen.c\
 ./utils/str/ft_substr.c\
 ./utils/str/ft_split.c\
+./utils/str/ft_putstr_fd.c\
+./utils/str/ft_isalpha.c\
+./utils/str/ft_isalnum.c\
+./utils/str/ft_is_space_nl_comma.c\
+./utils/str/ft_strdup.c\
+./utils/str/ft_atoi.c\
 ./utils/lst/source/ft_lst_remove_one.c\
 ./utils/lst/source/ft_lstclear.c\
 ./utils/lst/source/ft_lstmap.c\
@@ -65,6 +71,10 @@ SRCS	=\
 ./dda.c\
 ./draw/event_state.c\
 ./draw/draw.c\
+./parsing/ft_error.c\
+./parsing/parsing.c\
+./parsing/ft_texture_utils.c\
+./parsing/ft_texture_parsing.c\
 
 INCS	=\
 ./utils/str\
@@ -89,6 +99,7 @@ INCS	=\
 ./mlx_utils/screen\
 ./mlx_utils\
 ./mlx_utils/image\
+./parsing\
 
 # **************************************************************************** #
 
