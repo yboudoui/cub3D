@@ -6,12 +6,12 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/03 11:18:48 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:33:00 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
+/*
 static void	dda_cross_debug(t_screen *screen, t_vec2f cross, t_color color, int size)
 {
 	t_quad	block;
@@ -26,17 +26,21 @@ static void	dda_cross_debug(t_screen *screen, t_vec2f cross, t_color color, int 
 	block = rectangle(pos, (t_vec2){size, size}, color);
 	image_put_empty_quad(data->dda_debugger, block);
 }
-
+*/
 static t_dda	dda_horizontal(t_vec2f pos, float angle, t_map map, t_screen *screen)
 {
 	t_dda	out;
 	t_vec2f	pad;
 	t_vec2	p;
+	t_data *data;
 
+	data = screen->data;
 	out = (t_dda){.angle = angle, .len = INFINITY };
-	if (angle == 0 || angle == 180)
+
+	int t = angle / 360.0 * data->pre.size;
+	if (t == data->pre.limit[NORTH] || t == data->pre.limit[SOUHT])
 		return (out);
-	if (angle > 0 && angle < 180)
+	if (t > data->pre.limit[NORTH] && t < data->pre.limit[SOUHT])
 	{
 		out.point.y = floor(pos.y) - pos.y;
 		out.boundarie = SOUHT;
@@ -48,12 +52,11 @@ static t_dda	dda_horizontal(t_vec2f pos, float angle, t_map map, t_screen *scree
 		out.boundarie = NORTH;
 		pad.y = 1;
 	}
-	pad.x = pad.y / tanf(deg_to_rad(angle));
-	out.point.x = out.point.y / tanf(deg_to_rad(angle));
+	pad.x = pad.y / data->pre.tan_arr[t];
+	out.point.x = out.point.y / data->pre.tan_arr[t];
 
 	out.point.x += pos.x;
 	out.point.y += pos.y;
-	dda_cross_debug(screen, out.point, (t_color){.raw = 0x0}, 5);
 	p = (t_vec2){
 		.x = (int)(out.point.x),
 		.y = (int)(out.point.y),
@@ -61,7 +64,6 @@ static t_dda	dda_horizontal(t_vec2f pos, float angle, t_map map, t_screen *scree
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
 		out.len = vec2f_dist(out.point, pos);
-		dda_cross_debug(screen, out.point, (t_color){.raw = 0xFF0000}, 3);
 		if (map.data[p.y - (angle > 0 && angle < 180)][p.x] == '1')
 			return(out);
 		out.point = vec2f_add(out.point, pad);
@@ -78,7 +80,9 @@ static t_dda	dda_vertical(t_vec2f pos, float angle, t_map map, t_screen *screen)
 	t_dda	out;
 	t_vec2f	pad;
 	t_vec2	p;
+	t_data *data;
 
+	data = screen->data;
 	out = (t_dda){ .angle = angle, .len = INFINITY };
 	if (270 == angle || angle == 90)
 		return (out);
@@ -94,8 +98,11 @@ static t_dda	dda_vertical(t_vec2f pos, float angle, t_map map, t_screen *screen)
 		out.boundarie = WEST;
 		pad.x = -1;
 	}
-	out.point.y = out.point.x * tanf(deg_to_rad(angle));
-	pad.y = pad.x * tanf(deg_to_rad(angle));
+
+	int t = angle / 360.0 * data->pre.size;
+
+	out.point.y = out.point.x * data->pre.tan_arr[t];
+	pad.y = pad.x * data->pre.tan_arr[t];
 
 	out.point.x += pos.x;
 	out.point.y += pos.y;
@@ -103,10 +110,8 @@ static t_dda	dda_vertical(t_vec2f pos, float angle, t_map map, t_screen *screen)
 		.x = (int)out.point.x,
 		.y = (int)out.point.y,
 	};
-	dda_cross_debug(screen, out.point, (t_color){.raw = 0x0}, 5);
 	while (vec2i_in_range(p, vec2(0,0), map.size))
 	{
-		dda_cross_debug(screen, out.point, (t_color){.raw = 0x00FF00}, 3);
 		out.len = vec2f_dist(out.point, pos);
 		if (map.data[p.y][p.x - !(angle > 90 && angle < 270)] == '1')
 			return(out);
