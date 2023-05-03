@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 20:29:53 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/03 12:08:35 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,18 +109,14 @@ void	update_wall_distance(t_screen *screen)
 	t_data	*data;
 	int		index;
 	float	angle;
-	float	pad = 60.0 / screen->size.x;
 
 	data = screen->data;
-//	screen->size.x = 1;
-	index = 0;
-	while (index < screen->size.x)
+	index = -1;
+	while (++index < screen->size.x)
 	{
-		angle = (data->player.view - 30) + (pad * index);
-//		angle = (data->player.view) + (pad * index);
+		angle = (data->player.view - 30) + (data->pre.pad * index);
 		angle = wrap_angle(angle);
 		data->walls[index] = dda_checker(data->player.pos, angle, data->map, screen);
-		index += 1;
 	}
 }
 
@@ -128,9 +124,9 @@ int		find_column_in_texture(t_image *img, t_dda dda)
 {
 	float	pos;
 
-	if (dda.boundarie == VERTICAL)
+	if (dda.boundarie == EAST || dda.boundarie == WEST)
 		pos = dda.point.y - floor(dda.point.y);
-	if (dda.boundarie == HORIZONTAL)
+	if (dda.boundarie == NORTH || dda.boundarie == SOUHT)
 		pos = dda.point.x - floor(dda.point.x);
 	return (img->size.x * pos);
 }
@@ -161,6 +157,7 @@ void	draw_image(t_screen *screen)
 	float	wall;
 	int		index;
 	float	pad = 60.0 / screen->size.x;
+	t_image	*texture;
 	int		col;
 
 	data = screen->data;
@@ -172,18 +169,13 @@ void	draw_image(t_screen *screen)
 		wall = data->walls[index].len;
 		wall *= cosf(deg_to_rad(-30 + (index * pad))); //fish_eye correcteur
 		wall = 1 / wall * DIST;
-
-		col = find_column_in_texture(data->texture.north, data->walls[index]);
-		image_put_image_line(screen->img, data->texture.north,
+		texture = data->texture[data->walls[index].boundarie];
+		col = find_column_in_texture(texture, data->walls[index]);
+		image_put_image_line(screen->img, texture,
 			(t_vec2){index, screen->center.y - (wall / 2)},
 			(t_vec2){index, screen->center.y + (wall / 2)},
 			col
 		);
-/*
-		image_put_line(screen->img,
-			(t_pixel){.coord = (t_vec2){index, screen->center.y + (wall / 2)}, .color.raw = 0xFFFF00},
-			(t_pixel){.coord = (t_vec2){index, screen->center.y - (wall / 2)}, .color.raw = 0x00FFFF});
-*/
 	}
 
 	update_minimap(screen);
@@ -191,6 +183,4 @@ void	draw_image(t_screen *screen)
 	image_put_to_image(data->dda_debugger, data->mini_map);
 	image_put_to_image(data->mini_map, screen->img);
 	image_put_to_image(data->dda_debugger, screen->img);
-//	image_put_to_image(data->texture.north, screen->img);
-//	mlx_string_put(screen->mlx->mlx, screen->mlx->win, 200, 200, 0, "hello world");
 }

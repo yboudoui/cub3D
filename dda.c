@@ -6,13 +6,13 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 20:38:17 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/03 11:18:48 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static void		dda_cross_debug(t_screen *screen, t_vec2f cross, t_color color, int size)
+static void	dda_cross_debug(t_screen *screen, t_vec2f cross, t_color color, int size)
 {
 	t_quad	block;
 	t_vec2	pos;
@@ -33,17 +33,19 @@ static t_dda	dda_horizontal(t_vec2f pos, float angle, t_map map, t_screen *scree
 	t_vec2f	pad;
 	t_vec2	p;
 
-	out = (t_dda){ .angle = angle, .len = INFINITY, .boundarie = HORIZONTAL };
+	out = (t_dda){.angle = angle, .len = INFINITY };
 	if (angle == 0 || angle == 180)
 		return (out);
 	if (angle > 0 && angle < 180)
 	{
 		out.point.y = floor(pos.y) - pos.y;
+		out.boundarie = SOUHT;
 		pad.y = -1;
 	}
 	else
 	{
 		out.point.y = 1 - (pos.y - floor(pos.y));
+		out.boundarie = NORTH;
 		pad.y = 1;
 	}
 	pad.x = pad.y / tanf(deg_to_rad(angle));
@@ -77,17 +79,19 @@ static t_dda	dda_vertical(t_vec2f pos, float angle, t_map map, t_screen *screen)
 	t_vec2f	pad;
 	t_vec2	p;
 
-	out = (t_dda){ .angle = angle, .len = INFINITY, .boundarie = VERTICAL };
+	out = (t_dda){ .angle = angle, .len = INFINITY };
 	if (270 == angle || angle == 90)
 		return (out);
 	if (angle > 90 && angle < 270)
 	{
 		out.point.x = 1 - (pos.x - floor(pos.x));
+		out.boundarie = EAST;
 		pad.x = +1;
 	}
 	else
 	{
 		out.point.x = floor(pos.x) - pos.x;
+		out.boundarie = WEST;
 		pad.x = -1;
 	}
 	out.point.y = out.point.x * tanf(deg_to_rad(angle));
