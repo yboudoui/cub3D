@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:15:46 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 13:56:48 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 15:54:46 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,12 @@ void print_map(t_config *config)
 		printf("%s\n", config->map[i]);
 		i++;
 	}
+}
+
+void debug(t_config *config)
+{
+	print_player(config);
+	print_colors(config);
+	print_texture(config);
+	print_map(config);
 }

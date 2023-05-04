@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:59:23 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 16:59:28 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 18:36:04 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,10 @@ bool check_texture_name(char const *line, char const *texture_name)
 	int	i;
 
 	i = 0;
-	/* printf("line: %s\n", line); */
-	while (line[i])
-	{
-		if (ft_isspace(line[i]))
-		{
-			i++;
-			continue;
-		}
-		if (ft_strncmp(line + i, texture_name, ft_strlen(texture_name)) == 0)
-			return (true);
+	while (ft_isspace(line[i]))
 		i++;
-	}
+	if (ft_strncmp(line + i, texture_name, ft_strlen(texture_name)) == 0)
+		return (true);
 	return (false);
 }
 

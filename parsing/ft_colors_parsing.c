@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:09:56 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 20:10:30 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 18:41:17 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ bool parse_floor_color(t_list *head, t_config *config)
 	while (tmp)
 	{
 		str = (char *)tmp->content;
-		if (check_texture_name(str, "F") == true)
+		if (check_texture_name(str, "F ") == true)
 		{
 			color_path = get_color_path(str, "F");
 			if (color_path == NULL)
@@ -120,7 +120,7 @@ bool parse_ceiling_color(t_list *head, t_config *config)
 	while (tmp)
 	{
 		str = (char *)tmp->content;
-		if (check_texture_name(str, "C") == true)
+		if (check_texture_name(str, "C ") == true)
 		{
 			color_path = get_color_path(str, "C");
 			if (color_path == NULL)

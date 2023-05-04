@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:00:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 14:08:17 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 17:04:27 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,41 @@ bool parse_floor_color(t_list *head, t_config *config);
 bool parse_ceiling_color(t_list *head, t_config *config);
 bool parse_colors(t_list *head, t_config *config);
 
+// Player parsing
+bool check_number_of_players(t_list *submap);
+void get_player_angle(float *player_angle, char c);
+bool get_player_position(t_list *submap, t_config *config);
+bool parse_map_players(t_list *submap, t_config *config);
+
+// Map parsing
+t_list *get_equal_lines(t_list *tmp, int max);
+t_list *parse_submap(t_list *head);
+void map_str_transform(void *tmp);
+t_list *get_equal_lines(t_list *tmp, int max);
+int get_longest_line(t_list *tmp);
+bool get_player_position(t_list *submap, t_config *config);
+void get_player_angle(float *player_angle, char c);
+bool check_number_of_players(t_list *submap);
+bool parse_map_illegal_instruction(t_list *map);
+bool parse_legal_map_characters(char c);
+bool parse_map_illegal_character(t_list *map);
+bool parse_map_closed(t_list *submap);
+bool parse_map_into_charmap(t_list *submap, t_config *config);
+bool parse_map(t_list *head, t_config *config);
+bool zero_or_player(char c);
+
+// Parsing utils
+bool wrong_chars(char *str);
+bool check_syntax(char c);
+int open_file(char *filename);
+bool ends_with(char *str, char *end);
+void	init_config(t_config *config);
+
 // Debug
 void print_line(void *str);
 void print_texture(t_config *config);
 void print_colors(t_config *config);
 void print_player(t_config *config);
 void print_map(t_config *config);
+void debug(t_config *config);
 #endif

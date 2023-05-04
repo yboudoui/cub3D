@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:58:29 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 16:58:57 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 18:49:48 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool parse_texture_north(t_list *head, t_config *config)
 	while (tmp)
 	{
 		str = (char *)tmp->content;
-		if (check_texture_name(str, "NO") == true)
+		if (check_texture_name(str, "NO ") == true)
 		{
 			if (config->north_texture)
 				return (false);
@@ -43,7 +43,7 @@ bool parse_texture_south(t_list *head, t_config *config)
 	while (tmp)
 	{
 		str = (char *)tmp->content;
-		if (check_texture_name(str, "SO") == true)
+		if (check_texture_name(str, "SO ") == true)
 		{
 			if (config->south_texture)
 				return (false);
@@ -65,7 +65,7 @@ bool parse_texture_west(t_list *head, t_config *config)
 	while (tmp)
 	{
 		str = (char *)tmp->content;
-		if (check_texture_name(str, "WE") == true)
+		if (check_texture_name(str, "WE ") == true)
 		{
 			if (config->west_texture)
 				return (false);
@@ -87,7 +87,7 @@ bool parse_texture_east(t_list *head, t_config *config)
 	while (tmp)
 	{
 		str = (char *)tmp->content;
-		if (check_texture_name(str, "EA") == true)
+		if (check_texture_name(str, "EA ") == true)
 		{
 			if (config->east_texture)
 				return (false);
@@ -100,6 +100,54 @@ bool parse_texture_east(t_list *head, t_config *config)
 	return (false);
 }
 
+bool valid_texture_name(char *str)
+{
+		if (check_texture_name(str, "NO ") == true)
+			return (true);
+		else if (check_texture_name(str, "SO ") == true)
+			return (true);
+		else if (check_texture_name(str, "WE ") == true)
+			return (true);
+		else if (check_texture_name(str, "EA ") == true)
+			return (true);
+		else if (check_texture_name(str, "C ") == true)
+			return (true);
+		else if (check_texture_name(str, "F ") == true)
+			return (true);
+		else
+			return (false);
+}
+
+#include <stdio.h>
+
+bool parse_unknown_properties(t_list *head)
+{
+	t_list *tmp;
+	char *str;
+	int i;
+
+	tmp = head;
+	while (tmp)
+	{
+		i = 0;
+		str = (char *)tmp->content;
+		while (ft_isspace(str[i]))
+			i++;
+		if (str[i] == '0' || str[i] == '1')
+			return (true);
+		if (ft_isalnum(str[i]))
+		{
+			if (valid_texture_name(str) == false)
+			{
+				printf("line = %s\n", str);
+				return (false);
+			}
+		}
+		tmp = tmp->next;
+	}
+	return (true);
+}
+
 bool parse_texture(t_list *head, t_config *config)
 {
 	if (parse_texture_north(head, config) == false)
@@ -110,5 +158,10 @@ bool parse_texture(t_list *head, t_config *config)
 		return (false);
 	if (parse_texture_east(head, config) == false)
 		return (false);
+	if (parse_unknown_properties(head) == false)
+	{
+		printf("Here\n");
+		return (false);
+	}
 	return (true);
 }
