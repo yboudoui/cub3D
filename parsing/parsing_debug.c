@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:15:46 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 20:16:00 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 12:38:39 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,10 @@ void print_colors(t_config *config)
 	color_floor = config->floor_color;
 	printf("Ceiling Color: R: %u, G: %u, B: %u, T: %u\n", color_ceiling.chanel[RED], color_ceiling.chanel[GREEN], color_ceiling.chanel[BLUE], color_ceiling.chanel[TRANSPARENCY]);
 	printf("Floor Color: R: %u, G: %u, B: %u, T: %u\n", color_floor.chanel[RED], color_floor.chanel[GREEN], color_floor.chanel[BLUE], color_floor.chanel[TRANSPARENCY]);
+}
+
+void print_player(t_config *config)
+{
+	printf("Player Position: X: %f, Y: %f\n", config->player_pos.x, config->player_pos.y);
+	printf("Player Angle: %f\n", config->player_angle);
 }

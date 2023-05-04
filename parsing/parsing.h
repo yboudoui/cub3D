@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:00:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 20:16:53 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 12:38:47 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct s_config
 	char *south_texture;
 	char *west_texture;
 	char *east_texture;
-	t_vec2 player_pos;
-	int player_angle;
+	t_vec2f player_pos;
+	float player_angle;
 	bool set_floor_color;
 	bool set_ceiling_color;
 	t_color floor_color;

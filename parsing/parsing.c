@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:08:43 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 22:12:58 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 12:44:49 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ t_list *parse_submap(t_list *head)
 {
 	t_list *tmp;
 	t_list *out;
+	t_list *prev;
 	char *str;
 	int i;
 
@@ -95,8 +96,10 @@ t_list *parse_submap(t_list *head)
 			i++;
 		if (str[i] && (str[i] == '1' || str[i] == '0'))
 			break ;
+		prev = tmp;
 		tmp = tmp->next;
 	}
+	tmp = prev;	
 	while (tmp)
 	{
 		lst_add_back(&out, lst_new(tmp->content));
@@ -164,6 +167,125 @@ bool parse_map_illegal_character(t_list *map)
 	return (true);
 }
 
+bool parse_map_closed(t_list *submap)
+{
+	t_list *tmp;
+	t_list *tmp_prev;
+	char *str;
+	char *str_prev;
+	unsigned long i;
+
+	tmp = submap->next;
+	str_prev = (char *)submap->content;
+	while (tmp)
+	{
+		i = 0;
+		str = (char *)tmp->content;
+		while (str[i])
+		{
+			if (str[i] == '0')
+			{
+				if (i == 0 || i == ft_strlen(str) - 1)
+					return (false);
+				if (tmp->next == NULL || tmp_prev == NULL)
+					return (false);
+				if (ft_isspace(str[i - 1])|| ft_isspace(str[i + 1]))
+					return (false);
+				if (ft_strlen(str_prev) < i || ft_strlen(tmp->next->content) < i)
+					return (false);
+				if (ft_isspace(str_prev[i]) || ft_isspace(((char *)tmp->next->content)[i]))
+					return (false);
+			}
+			i++;
+		}
+		str_prev = str;
+		tmp_prev = tmp;
+		tmp = tmp->next;
+	}
+	return (true);
+}
+
+bool check_number_of_players(t_list *submap)
+{
+	t_list *tmp;
+	char *str;
+	int i;
+	int count;
+
+	tmp = submap;
+	count = 0;
+	while (tmp)
+	{
+		i = 0;
+		str = (char *)tmp->content;
+		while (str[i])
+		{
+			if (str[i] == 'N' || str[i] == 'S' || str[i] == 'W' || str[i] == 'E')
+				count++;
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	if (count != 1)
+		return (false);
+	return (true);
+}
+
+void get_player_angle(float *player_angle, char c)
+{
+	if (c == 'N')
+		*player_angle = 90;
+	else if (c == 'S')
+		*player_angle = 270;
+	else if (c == 'W')
+		*player_angle = 0;
+	else if (c == 'E')
+		*player_angle = 180;
+}
+
+bool get_player_position(t_list *submap, t_config *config)
+{
+	t_list *tmp;
+	char *str;
+	int i;
+	int j;
+
+	tmp = submap->next;
+	i = 0;
+	while (tmp)
+	{
+		j = 0;
+		str = (char *)tmp->content;
+		while (str[j])
+		{
+			if (str[j] == 'N' || str[j] == 'S' || str[j] == 'W' || str[j] == 'E')
+			{
+				config->player_pos.x = j;
+				config->player_pos.y = i;
+				get_player_angle(&config->player_angle, str[j]);
+				return (true);
+			}
+			j++;
+		}
+		i++;
+		tmp = tmp->next;
+	}
+	return (false);
+}
+
+bool parse_map_players(t_list *submap, t_config *config)
+{
+	if (check_number_of_players(submap) == false)
+		return (false);
+	if (get_player_position(submap, config) == false)
+		return (false);
+	return (true);
+}
+
+/* bool parse_map_small(t_list *submap) */
+/* { */
+/* 	return (false); */
+/* } */
 
 bool parse_map(t_list *head, t_config *config)
 {
@@ -175,6 +297,12 @@ bool parse_map(t_list *head, t_config *config)
 		return (false);
 	if (parse_map_illegal_character(submap) == false)
 		return (false);
+	if (parse_map_closed(submap) == false)
+		return (false);
+	if (parse_map_players(submap, config) == false)
+		return (false);
+	/* if (parse_map_small(submap) == false) */
+	/* 	return (false); */
 	config->map = (char **)malloc(sizeof(char *) * (lst_size(submap) + 1));
 	lst_iter(submap, print_line);
 	exit(0);
