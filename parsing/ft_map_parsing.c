@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:53:28 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 17:06:41 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 20:04:14 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ bool parse_map_into_charmap(t_list *submap, t_config *config)
 	tmp = get_equal_lines(tmp, map_size.x);
 	if (!tmp)
 		return (false);
-	config->map = (char **)malloc(sizeof(char *) * (map_size.y + 1));
+	config->map = (char **)ft_calloc(sizeof(char *), (map_size.y + 1));
 	if (!config->map)
 		return (false);
 	lst_iter(tmp, map_str_transform);

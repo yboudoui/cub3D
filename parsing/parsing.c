@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:08:43 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 16:00:50 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 19:51:07 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ bool parser(char *filename, t_config *config)
 		ft_error("Error\nInvalid map\n");
 		return (false);
 	}
+	lst_clear(&head, free);
 	/* print_colors(config); */
 	/* print_texture(config); */
 	/* lst_iter(head, print_line); */

@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/04 16:18:33 by kdhrif           ###   ########.fr        #
+#    Updated: 2023/05/04 19:45:05 by kdhrif           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME				=	cub3D
 
 CC					=	cc
 
-CFLAGS				=	-Wall -Wextra -Werror -Ofast -flto -march=native
+CFLAGS				=	-Wall -Wextra -Werror -Ofast -flto -march=native -g3
 
 RM					=	rm -f
 
