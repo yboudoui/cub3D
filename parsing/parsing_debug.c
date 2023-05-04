@@ -6,16 +6,17 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:15:46 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 12:38:39 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 13:56:48 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 #include <stdio.h>
+#include "lst.h"
 
 void print_line(void *str)
 {
-	printf("%s", (char *)str);
+	printf("%s\n", (char *)str);
 }
 
 void print_texture(t_config *config)
@@ -45,4 +46,16 @@ void print_player(t_config *config)
 {
 	printf("Player Position: X: %f, Y: %f\n", config->player_pos.x, config->player_pos.y);
 	printf("Player Angle: %f\n", config->player_angle);
+}
+
+void print_map(t_config *config)
+{
+	int i;
+
+	i = 0;
+	while (config->map[i])
+	{
+		printf("%s\n", config->map[i]);
+		i++;
+	}
 }

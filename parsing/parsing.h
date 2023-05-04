@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:00:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 12:38:47 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 14:08:17 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_config
 	char **map;
 }	t_config;
 
-int ft_error(char *str);
+bool ft_error(char *str);
 bool parser(char *filename, t_config *config);
 
 
@@ -58,9 +58,10 @@ bool parse_floor_color(t_list *head, t_config *config);
 bool parse_ceiling_color(t_list *head, t_config *config);
 bool parse_colors(t_list *head, t_config *config);
 
-
 // Debug
 void print_line(void *str);
 void print_texture(t_config *config);
 void print_colors(t_config *config);
+void print_player(t_config *config);
+void print_map(t_config *config);
 #endif

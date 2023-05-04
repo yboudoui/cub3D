@@ -6,14 +6,14 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:01:47 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/03 13:52:12 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 14:08:04 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-int ft_error(char *str)
+bool ft_error(char *str)
 {
 		ft_putstr_fd(str, 1);
-		return (-1);
+		return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:18:51 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/03 17:14:04 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 13:31:32 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "memory.h"
 # include <unistd.h>
 
+char		*ft_strjoin(char const *s1, char const *s2);
 int			ft_atoi(const char *nptr);
 int			ft_isalpha(int c);
 int			ft_isalnum(int c);

@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:08:43 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 12:44:49 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/04 14:40:30 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,9 @@ bool parse_map_illegal_instruction(t_list *map)
 
 bool parse_legal_map_characters(char c)
 {
-	if (ft_isspace(c) || c == '1' || \
+	if (c == ' ' || c == '1' || \
 			c == '0' || c == 'N' || c == 'S' || \
-			c == 'W' || c == 'E')
+			c == 'W' || c == 'E' || c == '\n')
 		return (true);
 	return (false);
 }
@@ -159,7 +159,13 @@ bool parse_map_illegal_character(t_list *map)
 		while (str[i])
 		{
 			if (parse_legal_map_characters(str[i]) == false)
+			{
+
+				printf("illegal character %c\n", str[i]);
+				printf("illegal character: %d\n", str[i]);
+				printf("line = %s\n", str);
 				return (false);
+			}
 			i++;
 		}
 		tmp = tmp->next;
@@ -174,9 +180,11 @@ bool parse_map_closed(t_list *submap)
 	char *str;
 	char *str_prev;
 	unsigned long i;
+	int j;
 
 	tmp = submap->next;
 	str_prev = (char *)submap->content;
+	j = 0;
 	while (tmp)
 	{
 		i = 0;
@@ -188,16 +196,32 @@ bool parse_map_closed(t_list *submap)
 				if (i == 0 || i == ft_strlen(str) - 1)
 					return (false);
 				if (tmp->next == NULL || tmp_prev == NULL)
+				{
 					return (false);
-				if (ft_isspace(str[i - 1])|| ft_isspace(str[i + 1]))
+				}
+				if (str[i - 1] == ' ' || str[i + 1] == ' ')
+				{
 					return (false);
+				}
 				if (ft_strlen(str_prev) < i || ft_strlen(tmp->next->content) < i)
+				{
 					return (false);
-				if (ft_isspace(str_prev[i]) || ft_isspace(((char *)tmp->next->content)[i]))
+				}
+				if (str_prev[i] == ' ' || ((char *)(tmp->next->content))[i] == ' ')
+				{
+					printf("str_prev[i] = -%c-\n", str_prev[i]);
+					printf("str_prev[i] = -%s-\n", str_prev);
+					printf("tmp->next->content[i] = -%c-\n", ((char *)tmp->next->content)[i]);
+					printf("line -%s-\n", str);
+					printf("char outside -%c-\n", str[i]);
+					printf("char nb = %lu", i);
+					printf("line nb = %d", j);
 					return (false);
+				}
 			}
 			i++;
 		}
+		j++;
 		str_prev = str;
 		tmp_prev = tmp;
 		tmp = tmp->next;
@@ -282,10 +306,92 @@ bool parse_map_players(t_list *submap, t_config *config)
 	return (true);
 }
 
-/* bool parse_map_small(t_list *submap) */
-/* { */
-/* 	return (false); */
-/* } */
+int get_longest_line(t_list *tmp)
+{
+	int max;
+	int len;
+
+	max = 0;
+	while (tmp)
+	{
+		len = ft_strlen((char *)tmp->content);
+		if (len > max)
+			max = len;
+		tmp = tmp->next;
+	}
+	return (max);
+}
+
+void map_str_transform(void *tmp)
+{
+	int i;
+	char *str;
+
+	i = 0;
+	str = (char *)tmp;
+	while (str[i])
+	{
+		if (ft_isspace(str[i]))
+			str[i] = '1';
+		i++;
+	}
+	return ;
+}
+
+t_list *get_equal_lines(t_list *tmp, int max)
+{
+	t_list *new;
+	char *str;
+	char *tmp_str;
+	int i;
+
+	new = NULL;
+	while (tmp)
+	{
+		str = (char *)tmp->content;
+		i = ft_strlen(str);
+		while (i < max)
+		{
+			tmp_str = str;
+			str = ft_strjoin(str, "1");
+			if (!str)
+				return (NULL);
+			free(tmp_str);
+			i++;
+		}
+		lst_add_back(&new, lst_new(str));
+		tmp = tmp->next;
+	}
+	return (new);
+}
+
+bool parse_map_into_charmap(t_list *submap, t_config *config)
+{
+	t_vec2 map_size;
+	t_list *tmp;
+	int	i;
+
+	tmp = submap->next;
+	map_size.y = lst_size(tmp);
+	map_size.x = get_longest_line(tmp);
+	if (map_size.x < 3 || map_size.y < 3)
+		return (false);
+	tmp = get_equal_lines(tmp, map_size.x);
+	if (!tmp)
+		return (false);
+	config->map = (char **)malloc(sizeof(char *) * (map_size.y + 1));
+	if (!config->map)
+		return (false);
+	lst_iter(tmp, map_str_transform);
+	i = 0;
+	while (i < map_size.y && tmp)
+	{
+		config->map[i] = (char *)tmp->content;
+		i++;
+		tmp = tmp->next;
+	}
+	return (true);
+}
 
 bool parse_map(t_list *head, t_config *config)
 {
@@ -294,20 +400,22 @@ bool parse_map(t_list *head, t_config *config)
 	submap = NULL;
 	submap = parse_submap(head);
 	if (parse_map_illegal_instruction(submap) == false)
-		return (false);
+		return (ft_error("Error\nIllegal instruction in map"));
 	if (parse_map_illegal_character(submap) == false)
-		return (false);
+		return (ft_error("Error\nIllegal character in map"));
 	if (parse_map_closed(submap) == false)
-		return (false);
+		return (ft_error("Error\nMap not closed"));
 	if (parse_map_players(submap, config) == false)
-		return (false);
-	/* if (parse_map_small(submap) == false) */
-	/* 	return (false); */
-	config->map = (char **)malloc(sizeof(char *) * (lst_size(submap) + 1));
+		return (ft_error("Error\nInvalid player"));
+	if (parse_map_into_charmap(submap, config) == false)
+		return (ft_error("Error\nMalloc error"));
+	printf("submap :\n");
 	lst_iter(submap, print_line);
+	printf("player :\n");
+	print_player(config);
+	printf("map :\n");
+	print_map(config);
 	exit(0);
-	/* if (parse_map_size(head, config) == false) */
-	/* 	return (false); */
 }
 
 bool parser(char *filename, t_config *config)
