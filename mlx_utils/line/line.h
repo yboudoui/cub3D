@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:33:11 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/27 15:19:03 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/05 07:03:08 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 # define LINE_H
 
 # include "pixel.h"
+
+typedef struct s_line {
+	t_pixel	start;
+	t_pixel	end;
+}	t_line;
 
 typedef struct s_bresenham_data {
 	t_vec2	derivative;

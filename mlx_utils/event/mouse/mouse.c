@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 06:34:41 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/03 11:19:50 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/05 18:36:10 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	mouse_position(int x, int y, t_event_mouse *event)
 	if (x == event->pos.x && y == event->pos.y)
 		event->delta = (t_vec2){0, 0};
 	else
-		event->delta = substract_vec2(new, event->pos);
+		event->delta = vec2_sub(new, event->pos);
 	event->pos = new;
 	return (0);
 }

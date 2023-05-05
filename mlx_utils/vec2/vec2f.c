@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:27:10 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/03 11:18:41 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/05 18:51:15 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,37 +31,28 @@ bool	vec2f_in_range(t_vec2f v, t_vec2f min, t_vec2f max)
 
 t_vec2f	vec2f_add(t_vec2f a, t_vec2f b)
 {
-	t_vec2f	out;
-
-	out.x = a.x + b.x;
-	out.y = a.y + b.y;
-	return (out);
-}
-
-float	vec2f_dist(t_vec2f a, t_vec2f b)
-{
-	t_vec2f	dist;
-
-	dist.x = fabsf(a.x - b.x);
-	dist.y = fabsf(a.y - b.y);
-	return (hypotf(dist.x, dist.y));
-}
-
-t_vec2f	vec2f_normalize(t_vec2f v)
-{
-	float	dist;
-
-	dist = vec2f_dist((t_vec2f){0,0}, v);
 	return ((t_vec2f){
-		.x = v.x / dist,
-		.y = v.y / dist,
+		.x = a.x + b.x,
+		.y = a.y + b.y,
 	});
 }
 
-t_vec2f	vec2f_scale(t_vec2f v, float scale)
+t_vec2f	vec2f_mul(t_vec2f a, t_vec2f b)
 {
 	return ((t_vec2f){
-		.x = v.x * scale,
-		.y = v.y * scale,
+		.x = a.x * b.x,
+		.y = a.y * b.y,
 	});
+}
+
+float	cosin_similarity(t_vec2f a, t_vec2f b)
+{
+	float	dot;
+	float	abs;
+
+	a = vec2f_normalize(a);
+	b = vec2f_normalize(b);
+	dot = vec2f_dot_produc(a, b);
+	abs = vec2f_size(a) * vec2f_size(b);
+	return (dot / abs);
 }

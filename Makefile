@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/03 11:22:47 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/05/05 18:47:02 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ LINK				=	-L $(MLX_DIR) -lmlx_Linux -lmlx -lXext -lX11 -lm
 # **************************************************************************** #
 
 SRCS	=\
+./mini_map.c\
 ./utils/str/ft_strtrim.c\
 ./utils/str/ft_strncmp.c\
 ./utils/str/ft_strlen.c\
@@ -49,8 +50,11 @@ SRCS	=\
 ./cub3D.c\
 ./main.c\
 ./mlx_utils/color/color.c\
+./mlx_utils/vec2/operation.c\
+./mlx_utils/vec2/operation_f.c\
 ./mlx_utils/vec2/vec2.c\
 ./mlx_utils/vec2/vec2f.c\
+./mlx_utils/texture/texture.c\
 ./mlx_utils/event/window/window.c\
 ./mlx_utils/event/event.c\
 ./mlx_utils/event/keyboard/keyboard.c\
@@ -59,6 +63,7 @@ SRCS	=\
 ./mlx_utils/pixel/pixel.c\
 ./mlx_utils/screen/screen.c\
 ./mlx_utils/mlx_utils.c\
+./mlx_utils/image/xpm.c\
 ./mlx_utils/image/quad.c\
 ./mlx_utils/image/triangle.c\
 ./mlx_utils/image/image.c\
@@ -81,6 +86,7 @@ INCS	=\
 ./mlx_linux\
 ./mlx_utils/color\
 ./mlx_utils/vec2\
+./mlx_utils/texture\
 ./mlx_utils/event\
 ./mlx_utils/event/window\
 ./mlx_utils/event/keyboard\

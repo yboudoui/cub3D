@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:17:12 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/03 11:23:06 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/04 21:45:41 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,6 @@ t_image	*image_new(t_mlx *data, t_vec2 size)
 			&out->line_length,
 			&out->endian);
 	image_clear(out, (t_color){.raw = 0x000000});
-	return (out);
-}
-
-t_image	*image_new_xpm(t_mlx *data, char *path)
-{
-	t_image	*out;
-
-	out = ft_calloc(1, sizeof(t_image));
-	if (NULL == out)
-		return (NULL);
-	out->mlx = data->mlx;
-	out->data = mlx_xpm_file_to_image(out->mlx, path,
-				&out->size.x, &out->size.y);
-	out->addr = mlx_get_data_addr(out->data,
-			&out->bits_per_pixel,
-			&out->line_length,
-			&out->endian);
 	return (out);
 }
 
@@ -99,44 +82,15 @@ inline t_pixel	image_get_pixel(t_image *img, t_vec2 pos)
 
 inline void	image_put_to_image(t_image *src, t_image *dest)
 {
-	t_pixel	index;
-	t_pixel	tmp;
-
-	index = (t_pixel){
-		.coord = (t_vec2){-1, -1},
-	};
-	while (++index.coord.y < src->size.y)
-	{
-		index.coord.x = -1;
-		while (++index.coord.x < src->size.x)
-		{
-			tmp = image_get_pixel(src, index.coord);
-	//		printf("%d\n", tmp.color.chanel[TRANSPARENCY]);
-			index.color = interpolate_color(
-				image_get_pixel(dest, index.coord).color,
-	0.5,//			(float)(255.0 / tmp.color.chanel[TRANSPARENCY]),
-				tmp.color
-			);
-//			index.color.chanel[TRANSPARENCY] = 0;
-			image_put_pixel(dest, index);
-		}
-	}
-}
-
-/*
-
-inline void	image_put_to_image(t_image *src, t_image *dest)
-{
 	int	index;
 
 	index = 0;
 	while (index < src->size.y)
 	{
 		ft_memcpy(
-				&dest->addr[index * dest->line_length],
-				&src->addr[index * src->line_length],
-				src->line_length);
+			&dest->addr[index * dest->line_length],
+			&src->addr[index * src->line_length],
+			src->line_length);
 		index += 1;
 	}
 }
-*/
