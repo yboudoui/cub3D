@@ -6,16 +6,16 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:53:28 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 20:04:14 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/05 18:57:03 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-bool parse_map_illegal_instruction(t_list *map)
+bool	parse_map_illegal_instruction(t_list *map)
 {
-	t_list *tmp;
-	char *str;
+	t_list	*tmp;
+	char	*str;
 
 	tmp = map;
 	while (tmp)
@@ -38,7 +38,7 @@ bool parse_map_illegal_instruction(t_list *map)
 	return (true);
 }
 
-bool parse_legal_map_characters(char c)
+bool	parse_legal_map_characters(char c)
 {
 	if (c == ' ' || c == '1' || \
 			c == '0' || c == 'N' || c == 'S' || \
@@ -47,11 +47,11 @@ bool parse_legal_map_characters(char c)
 	return (false);
 }
 
-bool parse_map_illegal_character(t_list *map)
+bool	parse_map_illegal_character(t_list *map)
 {
-	t_list *tmp;
-	char *str;
-	int i;
+	t_list	*tmp;
+	char	*str;
+	int		i;
 
 	tmp = map;
 	while (tmp)
@@ -69,43 +69,49 @@ bool parse_map_illegal_character(t_list *map)
 	return (true);
 }
 
-bool parse_map_closed(t_list *submap)
+bool	zero_or_player_condition(char *str, char *str_prev, int i)
 {
-	t_list *tmp;
-	t_list *tmp_prev;
-	char *str;
-	char *str_prev;
-	unsigned long i;
+	if (i == 0 || i == ft_strlen(str) - 1)
+		return (false);
+	if (str[i - 1] == ' ' || str[i + 1] == ' '\
+			|| str[i - 1] == '\n' || str[i + 1] == '\n')
+		return (false);
+	if (str_prev[i] == ' ' || str_prev[i + 1] == ' '\
+			|| str_prev[i] == '\n' || str_prev[i + 1] == '\n')
+		return (false);
+	return (true);
+}
+
+bool	parse_map_closed(t_list *submap)
+{
+	t_list			*tmp;
+	//t_list			*tmp_prev;
+	char			*str;
+	char			*str_prev;
+	unsigned long	i;
 
 	tmp = submap->next;
 	str_prev = (char *)submap->content;
 	while (tmp)
 	{
-		i = 0;
+		i = -1;
 		str = (char *)tmp->content;
-		while (str[i])
+		while (str[++i])
 		{
 			if (zero_or_player(str[i]))
 			{
-				if (i == 0 || i == ft_strlen(str) - 1)
-					return (false);
-				if (tmp->next == NULL || tmp_prev == NULL)
-					return (false);
-				if (str[i - 1] == ' ' || str[i + 1] == ' ' || str[i - 1] == '\n' || str[i + 1] == '\n')
-					return (false);
-				if (ft_strlen(str_prev) < i || ft_strlen(tmp->next->content) < i)
-					return (false);
-				if (str_prev[i] == ' ' || ((char *)(tmp->next->content))[i] == ' ')
+				if (tmp->next == NULL /*|| tmp_prev == NULL \*/
+						|| !zero_or_player_condition(str, str_prev, i))
 					return (false);
 			}
-			i++;
 		}
 		str_prev = str;
-		tmp_prev = tmp;
+		//tmp_prev = tmp;
 		tmp = tmp->next;
 	}
 	return (true);
 }
+#include <stdio.h>
 
 bool parse_map_into_charmap(t_list *submap, t_config *config)
 {
@@ -116,6 +122,8 @@ bool parse_map_into_charmap(t_list *submap, t_config *config)
 	tmp = submap->next;
 	map_size.y = lst_size(tmp);
 	map_size.x = get_longest_line(tmp);
+	printf("map_size.x = %d\n", map_size.x);
+	printf("map_size.y = %d\n", map_size.y);
 	if (map_size.x < 3 || map_size.y < 3)
 		return (false);
 	tmp = get_equal_lines(tmp, map_size.x);

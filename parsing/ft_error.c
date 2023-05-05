@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 11:01:47 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 14:08:04 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:59:36 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 bool ft_error(char *str)
 {
-		ft_putstr_fd(str, 1);
+		ft_putstr_fd(str, STDERR_FILENO);
 		return (false);
 }

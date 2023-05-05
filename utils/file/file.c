@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 14:52:34 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/03 13:55:26 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/05 17:59:20 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ t_list	*read_file(char *path, int oflag, void *(*f)(char*), t_fp_del del)
 	return (close(fd), out);
 }
 
+void	delete_action(char *line, t_list *out, t_fp_del del, int fd)
+{
+	ft_error("Error\nInvalid characters\n");
+	del(line);
+	lst_clear(&out, del);
+	close(fd);
+}
+
 t_list	*read_file_2(int fd, bool (*f)(char*), t_fp_del del)
 {
 	char	*line;
@@ -52,13 +60,13 @@ t_list	*read_file_2(int fd, bool (*f)(char*), t_fp_del del)
 	{
 		line = get_next_line(fd);
 		if (NULL == line)
+		{
+			ft_putstr_fd("Error\nEmpty Map\n", STDERR_FILENO);
 			break ;
+		}
 		if (f(line) == false)
 		{
-			ft_error("Error\nInvalid characters\n");
-			free(line);
-			lst_clear(&out, del);
-			close(fd);
+			delete_action(line, out, del, fd);
 			return (NULL);
 		}
 		tmp = ft_strdup(line);

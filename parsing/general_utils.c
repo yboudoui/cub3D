@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:00:54 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 16:01:03 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/05 15:10:40 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_config(t_config *config)
 	return ;
 }
 
-bool ends_with(char *str, char *end)
+bool	ends_with(char *str, char *end)
 {
 	int	str_len;
 	int	end_len;
@@ -43,7 +43,7 @@ bool ends_with(char *str, char *end)
 	return (false);
 }
 
-int open_file(char *filename)
+int	open_file(char *filename)
 {
 	int	fd;
 
@@ -55,14 +55,14 @@ int open_file(char *filename)
 	return (fd);
 }
 
-bool check_syntax(char c)
+bool	check_syntax(char c)
 {
 	if (ft_isalnum(c) || ft_is_nl_comma_fslash_dot(c) || ft_isspace(c))
 		return (true);
 	return (false);
 }
 
-bool wrong_chars(char *str)
+bool	wrong_chars(char *str)
 {
 	int	i;
 

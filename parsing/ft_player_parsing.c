@@ -6,18 +6,18 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:50:38 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 15:50:50 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/05 18:34:23 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-bool check_number_of_players(t_list *submap)
+bool	check_number_of_players(t_list *submap)
 {
-	t_list *tmp;
-	char *str;
-	int i;
-	int count;
+	t_list	*tmp;
+	char	*str;
+	int		i;
+	int		count;
 
 	tmp = submap;
 	count = 0;
@@ -27,7 +27,8 @@ bool check_number_of_players(t_list *submap)
 		str = (char *)tmp->content;
 		while (str[i])
 		{
-			if (str[i] == 'N' || str[i] == 'S' || str[i] == 'W' || str[i] == 'E')
+			if (str[i] == 'N' || str[i] == 'S'\
+					|| str[i] == 'W' || str[i] == 'E')
 				count++;
 			i++;
 		}
@@ -38,7 +39,7 @@ bool check_number_of_players(t_list *submap)
 	return (true);
 }
 
-void get_player_angle(float *player_angle, char c)
+void	get_player_angle(float *player_angle, char c)
 {
 	if (c == 'N')
 		*player_angle = 90;
@@ -50,29 +51,27 @@ void get_player_angle(float *player_angle, char c)
 		*player_angle = 180;
 }
 
-bool get_player_position(t_list *submap, t_config *config)
+bool	get_player_position(t_list *submap, t_config *config, int i)
 {
-	t_list *tmp;
-	char *str;
-	int i;
-	int j;
+	t_list	*tmp;
+	char	*str;
+	int		j;
 
 	tmp = submap->next;
-	i = 0;
 	while (tmp)
 	{
-		j = 0;
+		j = -1;
 		str = (char *)tmp->content;
-		while (str[j])
+		while (str[++j])
 		{
-			if (str[j] == 'N' || str[j] == 'S' || str[j] == 'W' || str[j] == 'E')
+			if (str[j] == 'N' || str[j] == 'S'\
+					|| str[j] == 'W' || str[j] == 'E')
 			{
 				config->player_pos.x = j;
 				config->player_pos.y = i;
 				get_player_angle(&config->player_angle, str[j]);
 				return (true);
 			}
-			j++;
 		}
 		i++;
 		tmp = tmp->next;
@@ -80,11 +79,11 @@ bool get_player_position(t_list *submap, t_config *config)
 	return (false);
 }
 
-bool parse_map_players(t_list *submap, t_config *config)
+bool	parse_map_players(t_list *submap, t_config *config)
 {
 	if (check_number_of_players(submap) == false)
 		return (false);
-	if (get_player_position(submap, config) == false)
+	if (get_player_position(submap, config, 0) == false)
 		return (false);
 	return (true);
 }
