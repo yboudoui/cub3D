@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/05 18:58:06 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/06 21:36:59 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,66 +33,58 @@ t_image	*image_env(t_screen *s, t_color ground, t_color ceiling)
 
 void	update_wall_distance(t_screen *screen)
 {
-	t_data			*data;
-	int				index;
-	float			angle;
+	t_data	*data;
+	int		index;
+	int		angle;
 
 	data = screen->data;
+	angle = data->player.view - data->player.hfov;
 	index = -1;
 	while (++index < screen->size.x)
-	{
-		angle = (data->player.view - 30) + (data->pre.pad * index);
-		angle = wrap_angle(angle);
-		int t = angle / 360.0 * data->pre.size;
-		data->walls[index] = dda(data->player.pos, t, data->map);
-	}
+		data->walls[index] = dda(data->player.pos, angle + index, data->map);
 }
 
-int	find_column_in_texture(t_image *img, t_dda dda)
+void	normal(t_normal_map nmap, t_pixel *pix, t_dda dda, int angle)
 {
-	float	pos;
+	t_vec2f	a;
+	t_vec2f	b;
+	float	similarity;
 
-	if (dda.boundarie == EAST || dda.boundarie == WEST)
-		pos = dda.point.y - floor(dda.point.y);
-	if (dda.boundarie == NORTH || dda.boundarie == SOUHT)
-		pos = dda.point.x - floor(dda.point.x);
-	return (img->size.x * pos);
+	a.x = nmap.map[pix->coord.y][pix->coord.x].y;
+	a.y = nmap.map[pix->coord.y][pix->coord.x].z;
+	if (dda.boundarie == NORTH)
+		a.y *= -1;
+	if (dda.boundarie == EAST)
+		a.x *= -1;
+	b.x = precompute(NULL).angle[angle].cos;
+	b.y = precompute(NULL).angle[angle].sin;
+	similarity = 1 - cosin_similarity(a, b);
+	color_contrast(&pix->color, -similarity);
 }
 
-void	image_put_image_line(t_image *dest, t_image *src, t_line line, t_dda dda, t_normal_map nmap, t_data *data, int angle)
+void	image_put_image_line(t_image *dest, int height, t_data *data, int i)
 {
 	int		index;
-	int		size;
 	float	scale;
 	int		col;
 	t_pixel	pix;
+	t_dda	dda;
 
-	float	similarity;
-	t_vec2f	a;
-	t_vec2f	b;
-
-	col = find_column_in_texture(src, dda);
+	dda = data->walls[i];
+	if (dda.boundarie == EAST || dda.boundarie == WEST)
+		scale = dda.point.y - floor(dda.point.y);
+	if (dda.boundarie == NORTH || dda.boundarie == SOUHT)
+		scale = dda.point.x - floor(dda.point.x);
+	col = data->texture[dda.boundarie]->size.x * scale;
+	scale = ((float)data->texture[dda.boundarie]->size.y / (float)height);
 	index = -1;
-	size = abs(line.start.coord.y - line.end.coord.y);
-	scale = (float)((float)src->size.y / (float)size);
-	while (++index < size)
+	while (++index < height)
 	{
-		pix = image_get_pixel(src, (t_vec2){col, index * scale});
-		a.x = nmap.map[pix.coord.y][pix.coord.x].y;
-		a.y = nmap.map[pix.coord.y][pix.coord.x].z;
-		if (dda.boundarie == NORTH)
-			a.y *= -1;
-		if (dda.boundarie == EAST)
-			a.x *= -1;
-		b.x = data->pre.cos[angle];
-		b.y = data->pre.sin[angle];
-		similarity = 1 - cosin_similarity(a, b);
-		color_contrast(&pix.color, -similarity);
-//		color_brightness(&pix.color, -similarity);
-		image_put_pixel(dest, (t_pixel){
-			.coord = (t_vec2){.x = line.start.coord.x, .y = line.start.coord.y + index},
-			.color = pix.color,
-		});
+		pix.coord = (t_vec2){col, (int)(index * scale)};
+		pix.color = data->texture[dda.boundarie]->column[col][pix.coord.y];
+		normal(data->nmap, &pix, dda, data->player.view);
+		pix.coord = (t_vec2){i, dest->center.y - (height / 2) + index};
+		image_put_pixel(dest, pix);
 	}
 }
 
@@ -101,9 +93,6 @@ void	draw_image(t_screen *screen)
 	t_data	*data;
 	float	wall;
 	int		index;
-	float	pad = 60.0 / screen->size.x;
-	t_image	*texture;
-	t_line	line;
 
 	data = screen->data;
 	index = -1;
@@ -112,14 +101,10 @@ void	draw_image(t_screen *screen)
 	while (++index < screen->size.x)
 	{
 		wall = data->walls[index].len;
-		wall *= cosf(deg_to_rad(-30 + (index * pad))); //fish_eye correcteur
+		wall *= precompute(0).angle[
+			y_wrap_angle(index - data->player.hfov)].cos;
 		wall = 1 / wall * DIST;
-		line = (t_line){
-			.start.coord = (t_vec2){index, screen->center.y - (wall / 2)},
-			.end.coord = (t_vec2){index, screen->center.y + (wall / 2)},
-		};
-		texture = data->texture[data->walls[index].boundarie];
-		image_put_image_line(screen->img, texture, line, data->walls[index], data->nmap, data, (int)(data->player.view / 360.0 * data->pre.size));
+		image_put_image_line(screen->img, wall, data, index);
 	}
-//	draw_minimap(screen);
+	draw_minimap(screen);
 }
