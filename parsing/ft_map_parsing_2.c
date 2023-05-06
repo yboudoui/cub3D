@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 18:18:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/06 18:27:10 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 21:46:08 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ bool	parse_map_into_charmap(t_list *submap, t_config *config)
 		return (false);
 	config->map = (char **)ft_calloc(sizeof(char *), (map_size.y + 1));
 	if (!config->map)
-		return (false);
+		return (lst_clear(&tmp, free), false);
 	lst_iter(tmp, map_str_transform);
 	i = 0;
 	while (i < map_size.y && tmp)
 	{
-		config->map[i] = (char *)tmp->content;
+		config->map[i] = ft_strdup((char *)tmp->content);
 		i++;
 		tmp = tmp->next;
 	}
-	return (true);
+	return (lst_clear(&tmp, free), true);
 }
 
 bool	parse_map(t_list *head, t_config *config)
@@ -56,6 +56,27 @@ bool	parse_map(t_list *head, t_config *config)
 		return (ft_error("Error\nInvalid player\n"));
 	if (parse_map_into_charmap(submap, config) == false)
 		return (ft_error("Error\nMalloc error"));
-	debug(config);
-	exit(0);
+	return (true);
+}
+
+void free_map(t_config *config)
+{
+	int i;
+
+	free(config->north_texture);
+	free(config->south_texture);
+	free(config->west_texture);
+	free(config->east_texture);
+	i = 0;
+	while (config->map[i] != NULL)
+	{
+		free(config->map[i]);
+		i++;
+	}
+	free(config->map);
+	config->north_texture = NULL;
+	config->south_texture = NULL;
+	config->west_texture = NULL;
+	config->east_texture = NULL;
+	config->map = NULL;
 }

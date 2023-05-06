@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 14:52:34 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/06 16:55:36 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 20:35:27 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	delete_action(char *line, t_list *out, t_fp_del del, int fd)
 t_list	*read_file_2(int fd, bool (*f)(char*), t_fp_del del)
 {
 	char	*line;
-	void	*tmp;
 	t_list	*out;
 
 	out = NULL;
@@ -66,14 +65,13 @@ t_list	*read_file_2(int fd, bool (*f)(char*), t_fp_del del)
 			delete_action(line, out, del, fd);
 			return (NULL);
 		}
-		tmp = ft_strdup(line);
-		free(line);
-		if (NULL == tmp || false == lst_create_back(&out, tmp))
+		if (NULL == line || false == lst_create_back(&out, line))
 		{
-			printf("Error on strdup or lst_create_back\n");
+			/* free(line); */
 			close(fd);
 			return (lst_clear(&out, del), NULL);
 		}
+		/* free(line); */
 	}
 	return (close(fd), out);
 }

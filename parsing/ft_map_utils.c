@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:54:26 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/06 18:22:16 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 21:34:35 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,15 @@ t_list	*get_equal_lines(t_list *tmp, int max)
 	new = NULL;
 	while (tmp)
 	{
-		str = (char *)tmp->content;
+		str = ft_strdup((char *)tmp->content);
 		i = ft_strlen(str);
 		while (i < max)
 		{
 			tmp_str = str;
 			str = ft_strjoin(str, "1");
+			free(tmp_str);
 			if (!str)
 				return (NULL);
-			free(tmp_str);
 			i++;
 		}
 		lst_add_back(&new, lst_new(str));

@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 18:22:48 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/05 18:23:12 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 20:18:35 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,13 @@ bool	parse_ceiling_color(t_list *head, t_config *config)
 		if (check_texture_name(str, "C ") == true)
 		{
 			color_path = get_color_path(str, "C");
-			if (color_path == NULL)
-				return (false);
-			if (config->set_ceiling_color)
-				return (false);
+			if (color_path == NULL || config->set_ceiling_color)
+				return (free(color_path), false);
 			if (parse_color_path(color_path, \
 						&config->ceiling_color, \
 						&config->set_ceiling_color) == false)
-				return (false);
+				return (free(color_path), false);
+			free(color_path);
 		}
 		tmp = tmp->next;
 	}

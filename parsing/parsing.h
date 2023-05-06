@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:00:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/06 16:40:58 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 19:34:08 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_config
 
 bool	ft_error(char *str);
 bool	parser(char *filename, t_config *config);
+void	free_map(t_config *config);
 
 // Texture parsing
 bool	check_texture_name(char const *line, char const *texture_name);

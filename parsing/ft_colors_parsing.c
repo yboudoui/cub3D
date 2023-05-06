@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:09:56 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/05 18:25:55 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 20:26:07 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,14 +118,13 @@ bool	parse_floor_color(t_list *head, t_config *config)
 		if (check_texture_name(str, "F ") == true)
 		{
 			color_path = get_color_path(str, "F");
-			if (color_path == NULL)
-				return (false);
-			if (config->set_floor_color)
-				return (false);
+			if (color_path == NULL || config->set_floor_color)
+				return (free(color_path), false);
 			if (parse_color_path(color_path, \
 						&config->floor_color, \
 						&config->set_floor_color) == false)
-				return (false);
+				return (free(color_path), false);
+			free(color_path);
 		}
 		tmp = tmp->next;
 	}

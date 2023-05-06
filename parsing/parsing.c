@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:08:43 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/06 16:55:51 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 20:28:49 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ bool	parser(char *filename, t_config *config)
 	if (parse_map(head, config) == false)
 		return (ft_error("Error\nInvalid map\n"));
 	lst_clear(&head, free);
+	debug(config);
+	free_map(config);
 	exit(0);
 }
