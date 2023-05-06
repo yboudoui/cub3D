@@ -1,11 +1,10 @@
-C 255,20 ,30
 NO      ./textures/eagle.xpm
 SO ./textures/greystone.xpm
 EA ./textures/red.xpm
 WE ./textures/purplestone.xpm
 
-S ./textures/tonneau.xpm
 F  000, 000, 00
+C 255,20 ,30
 
 
 

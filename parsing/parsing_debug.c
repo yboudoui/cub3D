@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 20:15:46 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 15:54:46 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 18:25:54 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include <stdio.h>
 #include "lst.h"
 
-void print_line(void *str)
+void	print_line(void *str)
 {
 	printf("%s\n", (char *)str);
 }
 
-void print_texture(t_config *config)
+void	print_texture(t_config *config)
 {
 	if (config->north_texture)
 		printf("north_texture: %s\n", config->north_texture);
@@ -31,26 +31,31 @@ void print_texture(t_config *config)
 		printf("east_texture: %s\n", config->east_texture);
 }
 
-void print_colors(t_config *config)
+void	print_colors(t_config *config)
 {
-	t_color color_ceiling;
-	t_color color_floor;
+	t_color	color_ceiling;
+	t_color	color_floor;
 
 	color_ceiling = config->ceiling_color;
 	color_floor = config->floor_color;
-	printf("Ceiling Color: R: %u, G: %u, B: %u, T: %u\n", color_ceiling.chanel[RED], color_ceiling.chanel[GREEN], color_ceiling.chanel[BLUE], color_ceiling.chanel[TRANSPARENCY]);
-	printf("Floor Color: R: %u, G: %u, B: %u, T: %u\n", color_floor.chanel[RED], color_floor.chanel[GREEN], color_floor.chanel[BLUE], color_floor.chanel[TRANSPARENCY]);
+	printf("Ceiling Color: R: %u, G: %u, B: %u, T: %u\n", \
+			color_ceiling.chanel[RED], color_ceiling.chanel[GREEN], \
+			color_ceiling.chanel[BLUE], color_ceiling.chanel[TRANSPARENCY]);
+	printf("Floor Color: R: %u, G: %u, B: %u, T: %u\n", \
+			color_floor.chanel[RED], color_floor.chanel[GREEN], \
+			color_floor.chanel[BLUE], color_floor.chanel[TRANSPARENCY]);
 }
 
-void print_player(t_config *config)
+void	print_player(t_config *config)
 {
-	printf("Player Position: X: %f, Y: %f\n", config->player_pos.x, config->player_pos.y);
+	printf("Player Position: X: %f, Y: %f\n", \
+			config->player_pos.x, config->player_pos.y);
 	printf("Player Angle: %f\n", config->player_angle);
 }
 
-void print_map(t_config *config)
+void	print_map(t_config *config)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (config->map[i])
@@ -58,12 +63,4 @@ void print_map(t_config *config)
 		printf("%s\n", config->map[i]);
 		i++;
 	}
-}
-
-void debug(t_config *config)
-{
-	print_player(config);
-	print_colors(config);
-	print_texture(config);
-	print_map(config);
 }

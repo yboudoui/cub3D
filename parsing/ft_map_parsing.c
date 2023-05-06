@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:53:28 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/05 18:57:03 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 18:20:56 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,18 @@ bool	parse_map_illegal_character(t_list *map)
 
 bool	zero_or_player_condition(char *str, char *str_prev, int i)
 {
-	if (i == 0 || i == ft_strlen(str) - 1)
+	int	str_prev_len;
+	int	str_len;
+
+	str_prev_len = ft_strlen(str_prev);
+	str_len = ft_strlen(str);
+	if (i < 0 || i >= str_len || i >= str_prev_len)
 		return (false);
-	if (str[i - 1] == ' ' || str[i + 1] == ' '\
-			|| str[i - 1] == '\n' || str[i + 1] == '\n')
+	if (i == 0 || i == (int)ft_strlen(str) - 1)
 		return (false);
-	if (str_prev[i] == ' ' || str_prev[i + 1] == ' '\
-			|| str_prev[i] == '\n' || str_prev[i + 1] == '\n')
+	if (ft_isspace(str[i - 1]) || ft_isspace(str[i + 1]))
+		return (false);
+	if (ft_isspace(str_prev[i]) || str_prev[i] == '\0')
 		return (false);
 	return (true);
 }
@@ -85,7 +90,6 @@ bool	zero_or_player_condition(char *str, char *str_prev, int i)
 bool	parse_map_closed(t_list *submap)
 {
 	t_list			*tmp;
-	//t_list			*tmp_prev;
 	char			*str;
 	char			*str_prev;
 	unsigned long	i;
@@ -100,65 +104,13 @@ bool	parse_map_closed(t_list *submap)
 		{
 			if (zero_or_player(str[i]))
 			{
-				if (tmp->next == NULL /*|| tmp_prev == NULL \*/
-						|| !zero_or_player_condition(str, str_prev, i))
+				if (tmp->next == NULL
+					|| !zero_or_player_condition(str, str_prev, i))
 					return (false);
 			}
 		}
 		str_prev = str;
-		//tmp_prev = tmp;
 		tmp = tmp->next;
 	}
 	return (true);
-}
-#include <stdio.h>
-
-bool parse_map_into_charmap(t_list *submap, t_config *config)
-{
-	t_vec2 map_size;
-	t_list *tmp;
-	int	i;
-
-	tmp = submap->next;
-	map_size.y = lst_size(tmp);
-	map_size.x = get_longest_line(tmp);
-	printf("map_size.x = %d\n", map_size.x);
-	printf("map_size.y = %d\n", map_size.y);
-	if (map_size.x < 3 || map_size.y < 3)
-		return (false);
-	tmp = get_equal_lines(tmp, map_size.x);
-	if (!tmp)
-		return (false);
-	config->map = (char **)ft_calloc(sizeof(char *), (map_size.y + 1));
-	if (!config->map)
-		return (false);
-	lst_iter(tmp, map_str_transform);
-	i = 0;
-	while (i < map_size.y && tmp)
-	{
-		config->map[i] = (char *)tmp->content;
-		i++;
-		tmp = tmp->next;
-	}
-	return (true);
-}
-
-bool parse_map(t_list *head, t_config *config)
-{
-	t_list *submap;
-
-	submap = NULL;
-	submap = parse_submap(head);
-	if (parse_map_illegal_instruction(submap) == false)
-		return (ft_error("Error\nIllegal instruction in map"));
-	if (parse_map_illegal_character(submap) == false)
-		return (ft_error("Error\nIllegal character in map"));
-	if (parse_map_closed(submap) == false)
-		return (ft_error("Error\nMap not closed"));
-	if (parse_map_players(submap, config) == false)
-		return (ft_error("Error\nInvalid player"));
-	if (parse_map_into_charmap(submap, config) == false)
-		return (ft_error("Error\nMalloc error"));
-	debug(config);
-	exit(0);
 }

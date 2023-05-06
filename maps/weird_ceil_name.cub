@@ -3,7 +3,7 @@ SO ./textures/greystone.xpm
 EA ./textures/red.xpm
 WE ./textures/purplestone.xpm
 
-CA 255,20 ,30
+CDS 255,20 ,30
 F  000, 000, 00
 
 

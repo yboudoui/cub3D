@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:08:43 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/05 18:25:14 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 16:55:51 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ bool	parser(char *filename, t_config *config)
 		return (ft_error("Error\nInvalid file\n"));
 	head = read_file_2(fd, wrong_chars, free);
 	if (!head)
-		return (false);
-	printf("here\n");
+		return (ft_error("Error\nInvalid file\n"));
 	if (parse_texture(head, config) == false)
 		return (ft_error("Error\nInvalid texture\n"));
 	if (parse_colors(head, config) == false)

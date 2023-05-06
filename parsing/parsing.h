@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:00:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/05 18:33:23 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 16:40:58 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool	parse_map_players(t_list *submap, t_config *config);
 
 // Map parsing
 t_list	*get_equal_lines(t_list *tmp, int max);
-t_list	*parse_submap(t_list *head);
+t_list	*parse_submap(t_list *head, int out, char *str);
 void	map_str_transform(void *tmp);
 t_list	*get_equal_lines(t_list *tmp, int max);
 int		get_longest_line(t_list *tmp);

@@ -6,13 +6,13 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:59:23 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 18:36:04 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 18:22:39 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-bool check_texture_name(char const *line, char const *texture_name)
+bool	check_texture_name(char const *line, char const *texture_name)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ bool check_texture_name(char const *line, char const *texture_name)
 	return (false);
 }
 
-char *get_texture_path(char const *line, char const *texture_name)
+char	*get_texture_path(char const *line, char const *texture_name)
 {
 	int	i;
 
@@ -34,7 +34,7 @@ char *get_texture_path(char const *line, char const *texture_name)
 		if (ft_isspace(line[i]))
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		if (ft_strncmp(line + i, texture_name, ft_strlen(texture_name)) == 0)
 		{

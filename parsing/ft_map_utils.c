@@ -6,25 +6,22 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:54:26 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/04 17:03:50 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 18:22:16 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-t_list *parse_submap(t_list *head)
+t_list	*parse_submap(t_list *head, int i, char *str)
 {
-	t_list *tmp;
-	t_list *out;
-	t_list *prev;
-	char *str;
-	int i;
+	t_list	*tmp;
+	t_list	*out;
+	t_list	*prev;
 
 	tmp = head;
 	out = NULL;
 	while (tmp)
 	{
-		i = 0;
 		str = tmp->content;
 		while (str[i] == ' ' || str[i] == '\t')
 			i++;
@@ -33,7 +30,7 @@ t_list *parse_submap(t_list *head)
 		prev = tmp;
 		tmp = tmp->next;
 	}
-	tmp = prev;	
+	tmp = prev;
 	while (tmp)
 	{
 		lst_add_back(&out, lst_new(tmp->content));
@@ -44,10 +41,10 @@ t_list *parse_submap(t_list *head)
 	return (out);
 }
 
-int get_longest_line(t_list *tmp)
+int	get_longest_line(t_list *tmp)
 {
-	int max;
-	int len;
+	int	max;
+	int	len;
 
 	max = 0;
 	while (tmp)
@@ -60,10 +57,10 @@ int get_longest_line(t_list *tmp)
 	return (max);
 }
 
-void map_str_transform(void *tmp)
+void	map_str_transform(void *tmp)
 {
-	int i;
-	char *str;
+	int		i;
+	char	*str;
 
 	i = 0;
 	str = (char *)tmp;
@@ -76,19 +73,19 @@ void map_str_transform(void *tmp)
 	return ;
 }
 
-bool zero_or_player(char c)
+bool	zero_or_player(char c)
 {
-if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
+	if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
 		return (true);
 	return (false);
 }
 
-t_list *get_equal_lines(t_list *tmp, int max)
+t_list	*get_equal_lines(t_list *tmp, int max)
 {
-	t_list *new;
-	char *str;
-	char *tmp_str;
-	int i;
+	t_list	*new;
+	char	*str;
+	char	*tmp_str;
+	int		i;
 
 	new = NULL;
 	while (tmp)

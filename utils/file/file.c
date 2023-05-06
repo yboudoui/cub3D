@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/05 14:52:34 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/05 17:59:20 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/06 16:55:36 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ t_list	*read_file_2(int fd, bool (*f)(char*), t_fp_del del)
 	{
 		line = get_next_line(fd);
 		if (NULL == line)
-		{
-			ft_putstr_fd("Error\nEmpty Map\n", STDERR_FILENO);
 			break ;
-		}
 		if (f(line) == false)
 		{
 			delete_action(line, out, del, fd);

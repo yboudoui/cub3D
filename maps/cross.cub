@@ -5,7 +5,7 @@ EA ./textures/red.xpm
 WE ./textures/purplestone.xpm
 
 F 000,  000, 00
-x                        
+
                        111111
                        100001
                        100001
