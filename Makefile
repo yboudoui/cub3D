@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/05 18:47:02 by yboudoui         ###   ########.fr        #
+#    Updated: 2023/05/06 21:38:44 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME				=	cub3D
 
 CC					=	cc
 
-CFLAGS				=	-Wall -Wextra -Werror -Ofast -flto -march=native
+CFLAGS				=	-Wall -Wextra -Werror
 
 RM					=	rm -f
 
@@ -49,6 +49,8 @@ SRCS	=\
 ./utils/get_next_line/get_next_line.c\
 ./cub3D.c\
 ./main.c\
+./texture.c\
+./data.c\
 ./mlx_utils/color/color.c\
 ./mlx_utils/vec2/operation.c\
 ./mlx_utils/vec2/operation_f.c\
@@ -67,6 +69,7 @@ SRCS	=\
 ./mlx_utils/image/quad.c\
 ./mlx_utils/image/triangle.c\
 ./mlx_utils/image/image.c\
+./mlx_utils/image/pixel.c\
 ./mlx_utils/image/line.c\
 ./dda.c\
 ./draw/event_state.c\
@@ -124,13 +127,31 @@ fclean:		clean
 
 re:			fclean all
 
+fast:		CFLAGS+= -Ofast -flto -march=native
+fast:		re
+			./$(NAME)
+
+fsanitize:	CFLAGS+= -g3 -fsanitize=address
+fsanitize:	re
+			./$(NAME)
+
 valgrind:	CFLAGS+= -g3
 valgrind:	re
+			@clear
 			@valgrind														\
 			-q																\
 			--leak-check=full												\
 			--show-leak-kinds=all											\
 			--track-origins=yes												\
+			--suppressions=./.mlx.supp										\
+			./$(NAME)														\
+
+callgrind:	CFLAGS+= -g3
+callgrind:	re
+			@clear
+			@valgrind														\
+			-q																\
+			--tool=callgrind												\
 			./$(NAME)														\
 
 .PHONY:		all clean fclean re bonus

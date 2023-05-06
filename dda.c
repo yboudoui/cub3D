@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:26:37 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/05 18:37:03 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:11:19 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static t_dda	dda_horizontal(t_vec2f pos, int angle, t_map map)
 	t_vec2f			pad;
 	t_precompute	pre;
 
+	out = (t_dda){0};
 	pre = precompute(NULL);
 	if (angle == pre.limit[NORTH] || angle == pre.limit[SOUHT])
 		return ((t_dda){.len = INFINITY});
@@ -52,8 +53,8 @@ static t_dda	dda_horizontal(t_vec2f pos, int angle, t_map map)
 		out.boundarie = NORTH;
 		pad.y = +1;
 	}
-	pad.x = pad.y / pre.tan[angle];
-	out.point.x = out.point.y / pre.tan[angle];
+	pad.x = pad.y / pre.angle[angle].tan;
+	out.point.x = out.point.y / pre.angle[angle].tan;
 	return (dda_len(out, map, pos, pad));
 }
 
@@ -63,6 +64,7 @@ static t_dda	dda_vertical(t_vec2f pos, int angle, t_map map)
 	t_vec2f			pad;
 	t_precompute	pre;
 
+	out = (t_dda){0};
 	pre = precompute(NULL);
 	if (angle == pre.limit[EAST] || angle == pre.limit[WEST])
 		return ((t_dda){.len = INFINITY});
@@ -78,8 +80,8 @@ static t_dda	dda_vertical(t_vec2f pos, int angle, t_map map)
 		out.boundarie = WEST;
 		pad.x = -1;
 	}
-	out.point.y = out.point.x * pre.tan[angle];
-	pad.y = pad.x * pre.tan[angle];
+	out.point.y = out.point.x * pre.angle[angle].tan;
+	pad.y = pad.x * pre.angle[angle].tan;
 	return (dda_len(out, map, pos, pad));
 }
 
@@ -88,6 +90,7 @@ t_dda	dda(t_vec2f pos, int angle, t_map map)
 	t_dda	dist_h;
 	t_dda	dist_v;
 
+	angle = y_wrap_angle(angle);
 	map.size = vec2_add(map.size, vec2(-1));
 	dist_h = dda_horizontal(pos, angle, map);
 	dist_v = dda_vertical(pos, angle, map);

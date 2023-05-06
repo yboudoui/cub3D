@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 17:37:16 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/02 17:48:20 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:27:03 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_mlx	t_mlx;
 typedef struct s_image {
 	void	*mlx;
 	t_vec2	size;
+	t_vec2	center;
 	void	*data;
 	char	*addr;
 	int		bits_per_pixel;

@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:41:24 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/05 18:35:44 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:28:52 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ void	draw_minimap(t_screen *screen)
 	image_put_to_image(data->mini_map, screen->img);
 	index = 0;
 	pos.color.raw = 0xFF0000;
-	t_vec2	p = {.x = (int)data->player.pos.x, .y = (int)data->player.pos.y};
-	pos.coord = vec2_mul(p, vec2(16));
+	pos.coord = vec2_mul(vec2f_floor(data->player.pos), vec2(16));
 	while (index < screen->size.x)
 	{
-		new = pos;
+		new.coord.x = pos.coord.x;
+		new.coord.y = pos.coord.y;
 		len = data->walls[index].len * 16.0;
-		new.coord.x -= data->pre.cos[data->walls[index].angle] * len;
-		new.coord.y -= data->pre.sin[data->walls[index].angle] * len;
+		new.coord.x -= precompute(0).angle[data->walls[index].angle].cos * len;
+		new.coord.y -= precompute(0).angle[data->walls[index].angle].sin * len;
 		image_put_line(screen->img, pos, new);
 		index += 1;
 	}

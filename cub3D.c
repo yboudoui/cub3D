@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:16:09 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/05 18:58:01 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/06 20:30:43 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,30 @@ float	deg_to_rad(float deg)
 	return (deg * M_PI / 180);
 }
 
-t_precompute	precompute_tan(float fov, int screen_width)
+void	precompute_init(float fov, int screen_width)
 {
-	t_precompute	out;
-	int				index;
-	float			angle;
-	float			ratio;
+	static t_precompute	out;
+	int					index;
+	float				ratio;
 
 	ratio = 360.0 / fov;
 	out.pad = fov / screen_width;
-	out.size = screen_width * ratio;
-	out.tan = ft_calloc(out.size - 1, sizeof(float));
-	out.cos = ft_calloc(out.size - 1, sizeof(float));
-	out.sin = ft_calloc(out.size - 1, sizeof(float));
-//protect calloc error!!
+	out.size = (screen_width * ratio) - 1;
+	out.angle = ft_calloc(out.size, sizeof(struct s_angle));
+	if (out.angle == NULL)
+		return ;
 	index = -1;
-	angle = 0;
-	while (++index < screen_width * ratio)
+	while (++index < out.size)
 	{
-		out.tan[index] = tanf(deg_to_rad(angle));
-		out.cos[index] = cosf(deg_to_rad(angle));
-		out.sin[index] = sinf(deg_to_rad(angle));
-		angle += out.pad;
+		out.angle[index].tan = tanf(deg_to_rad(index * out.pad));
+		out.angle[index].cos = cosf(deg_to_rad(index * out.pad));
+		out.angle[index].sin = sinf(deg_to_rad(index * out.pad));
 	}
 	out.limit[NORTH] = 0;
 	out.limit[EAST] = out.size / 4;
 	out.limit[SOUHT] = out.size / 2;
 	out.limit[WEST] = (out.size / 4) * 3;
-	return (out);
+	precompute(&out);
 }
 
 t_precompute	precompute(t_precompute *in)
@@ -54,4 +50,16 @@ t_precompute	precompute(t_precompute *in)
 	if (out == NULL)
 		out = in;
 	return (*out);
+}
+
+int	y_wrap_angle(int angle)
+{
+	int	angle_mod;
+	int	fiel_of_view;
+
+	fiel_of_view = precompute(NULL).size;
+	angle_mod = angle % fiel_of_view;
+	if (angle_mod < 0)
+		angle_mod += fiel_of_view;
+	return (angle_mod);
 }
