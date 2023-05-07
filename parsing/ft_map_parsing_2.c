@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 18:18:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/07 16:21:53 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:16:58 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ bool	parse_map_into_charmap(t_list *submap, t_config *config)
 		i++;
 		tmp = tmp->next;
 	}
+	config->map_size = map_size;
 	return (lst_clear(&tmp2, free), true);
 }
 

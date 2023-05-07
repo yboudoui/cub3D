@@ -6,11 +6,12 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:58:29 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/07 18:01:16 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:33:58 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include <stdio.h>
 
 bool	parse_texture_north(t_list *head, t_config *config)
 {
@@ -27,7 +28,10 @@ bool	parse_texture_north(t_list *head, t_config *config)
 				return (xfree(&config->north_texture), false);
 			config->north_texture = get_texture_path(str, "NO");
 			if (ends_with(config->north_texture, ".xpm") == false)
+			{
+				printf("%s", config->north_texture);
 				return (xfree(&config->north_texture), false);
+			}
 		}
 		tmp = tmp->next;
 	}
@@ -98,8 +102,8 @@ bool	parse_texture_east(t_list *head, t_config *config)
 			if (config->east_texture)
 				return (xfree(&config->east_texture), false);
 			config->east_texture = get_texture_path(str, "EA");
-			/* if (ends_with(config->east_texture, ".xpm") == false) */
-			/* 	return (xfree(&config->west_texture), false); */
+			if (ends_with(config->east_texture, ".xpm") == false)
+				return (xfree(&config->west_texture), false);
 		}
 		tmp = tmp->next;
 	}

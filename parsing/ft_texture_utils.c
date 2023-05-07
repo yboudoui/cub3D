@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:59:23 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/06 18:22:39 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:33:25 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_texture_path(char const *line, char const *texture_name)
 			i += ft_strlen(texture_name);
 			while (line[i] && ft_isspace(line[i]))
 				i++;
-			return (ft_strdup(line + i));
+			return (ft_strtrim(line + i, "\n"));
 		}
 		i++;
 	}
