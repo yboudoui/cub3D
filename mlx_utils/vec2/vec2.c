@@ -6,15 +6,15 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/20 17:25:11 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 10:48:57 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/05 18:40:45 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vec2.h"
 
-t_vec2	vec2(int x, int y)
+t_vec2	vec2(int v)
 {
-	return ((t_vec2){x, y});
+	return ((t_vec2){v, v});
 }
 
 int	cmp(int a, int b)
@@ -28,33 +28,6 @@ t_vec2	cmp_vec2(t_vec2 a, t_vec2 b)
 
 	out.x = cmp(a.x, b.x);
 	out.y = cmp(a.y, b.y);
-	return (out);
-}
-
-t_vec2	substract_vec2(t_vec2 a, t_vec2 b)
-{
-	t_vec2	out;
-
-	out.x = a.x - b.x;
-	out.y = a.y - b.y;
-	return (out);
-}
-
-t_vec2	mul_vec2(t_vec2 a, t_vec2 b)
-{
-	t_vec2	out;
-
-	out.x = a.x * b.x;
-	out.y = a.y * b.y;
-	return (out);
-}
-
-t_vec2	add_vec2(t_vec2 a, t_vec2 b)
-{
-	t_vec2	out;
-
-	out.x = a.x + b.x;
-	out.y = a.y + b.y;
 	return (out);
 }
 

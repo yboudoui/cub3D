@@ -6,34 +6,34 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 16:00:52 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:29:54 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-#define WIDTH 1280
-#define HEIGHT 800
+const t_color	g_floor = {.raw = 0x0000FF};
+const t_color	g_ceilling = {.raw = 0xFF00FF};
 
-char *map[] = {
-"1111111111",
-"1000000001",
-"1000000001",
-"1000000001",
-"1000000001",
-"1000000001",
-"1000000001",
-"1000000001",
-"1000111001",
-"1000000001",
-"1000000001",
-"1111111111",
-NULL,
+char			*g_map[] = {
+	"1111111111",
+	"1000000001",
+	"1000000001",
+	"1000000001",
+	"1000001001",
+	"1000101001",
+	"1000001001",
+	"1000001001",
+	"1000111111",
+	"1000000001",
+	"1000000001",
+	"1111111111",
+	NULL,
 };
 
 int	draw(t_screen *screen)
 {
-	if (false == update_state(screen))//	here update mouse + keyboard state
+	if (false == update_state(screen))
 		return (-1);
 	draw_image(screen);
 	mlx_put_image_to_window(screen->mlx->mlx, screen->mlx->win,
@@ -41,56 +41,32 @@ int	draw(t_screen *screen)
 	return (0);
 }
 
-int ft_max(int a, int b)
+void	init(t_screen *screen)
 {
-	if (a > b)
-		return (a);
-	return (b);
+	static t_data	data;
+
+	data = data_init(screen, g_floor, g_ceilling, (char **)g_map);
+	screen->data = &data;
+	player_init(&data, (t_vec2f){2, 2}, EAST);
+	init_minimap(screen);
 }
 
-t_vec2 calculate_map_size(char **map)
+void	stop(t_screen *screen)
 {
-	t_vec2	size;
-	int		i;
-
-	size = vec2(0, 0);
-	i = 0;
-	while (map[i])
-	{
-		size.x = ft_max(size.x, ft_strlen(map[i]));
-		size.y += 1;
-		i += 1;
-	}
-	return (size);
+	free(precompute(NULL).angle);
+	data_destroy(screen->data);
+	screen_destroy(screen);
 }
 
 int	main(void)
 {
 	t_screen	*screen;
-	t_data		data;
 
-	screen = screen_create("cub3D", vec2(WIDTH, HEIGHT));
+	screen = screen_create("cub3D", (t_vec2){WIDTH, HEIGHT});
 	if (NULL == screen)
 		return (-2);
-	/* data.map = (t_map){(char **)map, vec2(10, 12)}; */
-	data.map = (t_map){(char **)map, calculate_map_size(map), mul_vec2(calculate_map_size(map), vec2(TILE_SIZE, TILE_SIZE))}; // dynamic map size parsing
-	data.mini_map = image_new(screen->mlx, add_vec2(mul_vec2(data.map.size, vec2(16, 16)), vec2(1, 1)));
-	data.dda_debugger = image_new(screen->mlx, add_vec2(mul_vec2(data.map.size, vec2(16, 16)), vec2(1, 1)));
-	data.player = (t_player){
-			.pos = (t_vec2f){5, 3},
-			.view = 280.397461,
-			.fov = 60,
-<<<<<<< HEAD
-			.mouse_speed = 0.5
-			/* .mouse_speed = 56 */
-=======
-//			.mouse_speed = 0.5
-			.mouse_speed = 56
->>>>>>> b4eedf6 (old)
-		};
-	data.walls = ft_calloc(screen->size.x, sizeof(t_wall));
-	screen->data = &data;
+	init(screen);
 	mlx_loop_hook(screen->mlx->mlx, draw, screen);
 	mlx_loop(screen->mlx->mlx);
-	return (screen_destroy(screen), 0);
+	return (stop(screen), 0);
 }

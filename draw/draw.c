@@ -6,153 +6,103 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 16:00:38 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 16:35:33 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void	draw_floor_and_ceiling(t_screen *s, t_color ground, t_color ceiling)
+t_image	*image_env(t_screen *s, t_color ground, t_color ceiling)
 {
 	t_quad	g;
 	t_quad	c;
+	t_image	*out;
 
-	g = rectangle(vec2(0,0), vec2(s->size.x, s->size.y / 2), ground);
-	c = rectangle(vec2(0,s->size.y / 2), vec2(s->size.x, s->size.y / 2), ceiling);
-	image_put_quad(s->img, c);
-	image_put_quad(s->img, g);
+	out = image_new(s->mlx, s->size);
+	c = rectangle(
+			(t_vec2){0, (s->size.y / 2) - 1},
+			(t_vec2){s->size.x, (s->size.y / 2) - 1},
+			ceiling);
+	g = rectangle(vec2(0), (t_vec2){s->size.x, s->size.y / 2}, ground);
+	image_put_quad(out, c);
+	image_put_quad(out, g);
+	return (out);
 }
 
 #define DIST 800
-
-float	deg_to_rad(float deg)
-{
-	return (deg * M_PI / 180);
-}
-
-void	draw_minimap_grid(t_screen *screen)
-{
-	t_data	*data;
-	t_quad	block;
-	const t_vec2	block_size = {16, 16};
-	t_vec2	pos;
-
-	data = screen->data;
-	pos = (t_vec2){0, 0};
-	while (pos.y < data->map.size.y)
-	{
-		pos.x = 0;
-		while (pos.x < data->map.size.x)
-		{
-			block = rectangle(mul_vec2(pos, block_size), block_size, (t_color){.raw = 0xDDDDDD});
-			image_put_empty_quad(data->mini_map, block);
-			pos.x += 1;
-		}
-		pos.y += 1;
-	}
-//	image_put_to_image(data->mini_map, screen->img);
-}
-
-
-void	draw_minimap(t_screen *screen)
-{
-	t_data	*data;
-	t_quad	block;
-	const t_vec2	block_size = {16, 16};
-	t_vec2	pos;
-
-	data = screen->data;
-	image_clear(data->mini_map, (t_color){.raw = 0xFFFFFF});
-	draw_minimap_grid(screen);
-	pos = (t_vec2){0, 0};
-	while (pos.y < data->map.size.y)
-	{
-		pos.x = 0;
-		while (pos.x < data->map.size.x)
-		{
-			if (data->map.data[pos.y][pos.x] == '1')
-			{
-				block = rectangle(mul_vec2(pos, block_size), block_size, (t_color){.raw = 0x0});
-				image_put_empty_quad(data->mini_map, block);
-			}
-			pos.x += 1;
-		}
-		pos.y += 1;
-	}
-}
-
-void	update_minimap(t_screen *screen)
-{
-	int	index;
-	t_data	*data;
-	t_pixel	new;
-	t_pixel	pos;
-
-	draw_minimap(screen);
-	data = screen->data;
-	index = 0;
-	pos.color.raw = 0xFF0000;
-	pos.coord.x = (data->player.pos.x * 16);
-	pos.coord.y = (data->player.pos.y * 16);
-	while (index < screen->size.x)
-	{
-		new = pos;
-		new.coord.x += cos(deg_to_rad(data->walls[index].angle)) * (data->walls[index].distance * 16);
-		new.coord.y -= sin(deg_to_rad(data->walls[index].angle)) * (data->walls[index].distance * 16);
-		image_put_line(data->mini_map, pos, new);
-		index += 1;
-	}
-}
 
 void	update_wall_distance(t_screen *screen)
 {
 	t_data	*data;
 	int		index;
-	float	angle;
-	float	pad = 60.0 / screen->size.x;
+	int		angle;
 
 	data = screen->data;
-//	screen->size.x = 1;
-	index = 0;
-	while (index < screen->size.x)
+	angle = data->player.view - data->player.hfov;
+	index = -1;
+	while (++index < screen->size.x)
+		data->walls[index] = dda(data->player.pos, angle + index, data->map);
+}
+
+void	normal(t_normal_map nmap, t_pixel *pix, t_dda dda, int angle)
+{
+	t_vec2f	a;
+	t_vec2f	b;
+	float	similarity;
+
+	a.x = nmap.map[pix->coord.y][pix->coord.x].y;
+	a.y = nmap.map[pix->coord.y][pix->coord.x].z;
+	if (dda.boundarie == NORTH)
+		a.y *= -1;
+	if (dda.boundarie == EAST)
+		a.x *= -1;
+	b.x = precompute(NULL).angle[angle].cos;
+	b.y = precompute(NULL).angle[angle].sin;
+	similarity = 1 - cosin_similarity(a, b);
+	color_contrast(&pix->color, -similarity);
+}
+
+void	image_put_image_line(t_image *dest, int height, t_data *data, int i)
+{
+	int		index;
+	float	scale;
+	int		col;
+	t_pixel	pix;
+	t_dda	dda;
+
+	dda = data->walls[i];
+	if (dda.boundarie == EAST || dda.boundarie == WEST)
+		scale = dda.point.y - floor(dda.point.y);
+	if (dda.boundarie == NORTH || dda.boundarie == SOUHT)
+		scale = dda.point.x - floor(dda.point.x);
+	col = data->texture[dda.boundarie]->size.x * scale;
+	scale = ((float)data->texture[dda.boundarie]->size.y / (float)height);
+	index = -1;
+	while (++index < height)
 	{
-		angle = (data->player.view - 30) + (pad * index);
-//		angle = (data->player.view) + (pad * index);
-		data->walls[index].distance = dda_checker(data->player.pos, angle, data->map);
-		data->walls[index].angle = angle;
-		index += 1;
+		pix.coord = (t_vec2){col, (int)(index * scale)};
+		pix.color = data->texture[dda.boundarie]->column[col][pix.coord.y];
+		pix.coord = (t_vec2){i, dest->center.y - (height / 2) + index};
+		image_put_pixel(dest, pix);
 	}
 }
 
 void	draw_image(t_screen *screen)
 {
 	t_data	*data;
-	float	dist_to_wall;
-	int wall_height;
+	float	wall;
 	int		index;
-	float	pad = 60.0 / screen->size.x;
-	float projection_plane_dist = (screen->size.x / 2) / tan(deg_to_rad(30));
 
 	data = screen->data;
-	index = 0;
-	draw_floor_and_ceiling(screen, (t_color){.raw = 0xFF00FF}, (t_color){.raw = 0x0000FF});
+	index = -1;
+	image_put_to_image(data->floor_ceilling, screen->img);
 	update_wall_distance(screen);
-	while (index < screen->size.x)
+	while (++index < screen->size.x)
 	{
-		dist_to_wall = data->walls[index].distance;
-		wall_height *= cosf(deg_to_rad(-30 + (index * pad))); //fish_eye correcteur
-		wall_height = 64 / dist_to_wall * projection_plane_dist;
-		/* printf("wall_height: %d\n", wall_height); */
-		image_put_line(screen->img,
-			(t_pixel){.coord = (t_vec2){index, screen->center.y + (wall_height / 2)}, .color.raw = 0xFFFF00},
-			(t_pixel){.coord = (t_vec2){index, screen->center.y - (wall_height / 2)}, .color.raw = 0x00FFFF});
-		index += 1;
+		wall = data->walls[index].len;
+		wall *= precompute(0).angle[
+			y_wrap_angle(index - data->player.hfov)].cos;
+		wall = 1 / wall * DIST;
+		image_put_image_line(screen->img, wall, data, index);
 	}
-	/* update_minimap(screen); */
-
-
-	/* image_put_to_image(data->dda_debugger, data->mini_map); */
-	image_put_to_image(data->mini_map, screen->img);
-//	image_put_to_image(data->dda_debugger, screen->img);
-//	mlx_string_put(screen->mlx->mlx, screen->mlx->win, 200, 200, 0, "hello world");
 }

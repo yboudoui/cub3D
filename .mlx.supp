@@ -1,0 +1,64 @@
+{
+   MLX_XOpenDisplay
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XOpenDisplay
+   ...
+}
+{
+   MLX_XWindowEvent
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XWindowEvent
+   ...
+}
+{
+   MLX_XSync
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XSync
+   ...
+}
+{
+   MLX_XInternAtom
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XInternAtom
+   ...
+}
+{
+   MLX_XFlush
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XFlush
+   ...
+}
+{
+   MLX_XShmCreateImage
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XShmCreateImage
+   ...
+}
+{
+   MLX_XInitExtension
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XInitExtension
+   ...
+}
+{
+   MLX_XextAddDisplay
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:XextAddDisplay
+   ...
+}

@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:13:05 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/25 15:16:58 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/05 18:36:48 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ inline void	bresenham_data_update(t_bresenham_data *in)
 		in->error += in->derivative.x;
 		out.y = in->slop.y;
 	}
-	in->current.coord = add_vec2(in->current.coord, out);
+	in->current.coord = vec2_add(in->current.coord, out);
 	in->current.color = interpolate_color(
 			in->start.color,
 			in->color_interpolation.current,

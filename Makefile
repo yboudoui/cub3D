@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/01 21:36:17 by kdhrif           ###   ########.fr        #
+#    Updated: 2023/05/07 16:02:17 by yboudoui         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME				=	cub3D
 
 CC					=	cc
 
-CFLAGS				=	-Wall -Wextra -Werror -g3
+CFLAGS				=	-Wall -Wextra -Werror
 
 RM					=	rm -f
 
@@ -26,6 +26,7 @@ LINK				=	-L $(MLX_DIR) -lmlx_Linux -lmlx -lXext -lX11 -lm
 # **************************************************************************** #
 
 SRCS	=\
+./mini_map.c\
 ./utils/str/ft_strtrim.c\
 ./utils/str/ft_strncmp.c\
 ./utils/str/ft_strlen.c\
@@ -48,9 +49,14 @@ SRCS	=\
 ./utils/get_next_line/get_next_line.c\
 ./cub3D.c\
 ./main.c\
+./texture.c\
+./data.c\
 ./mlx_utils/color/color.c\
+./mlx_utils/vec2/operation.c\
+./mlx_utils/vec2/operation_f.c\
 ./mlx_utils/vec2/vec2.c\
 ./mlx_utils/vec2/vec2f.c\
+./mlx_utils/texture/texture.c\
 ./mlx_utils/event/window/window.c\
 ./mlx_utils/event/event.c\
 ./mlx_utils/event/keyboard/keyboard.c\
@@ -59,9 +65,11 @@ SRCS	=\
 ./mlx_utils/pixel/pixel.c\
 ./mlx_utils/screen/screen.c\
 ./mlx_utils/mlx_utils.c\
+./mlx_utils/image/xpm.c\
 ./mlx_utils/image/quad.c\
 ./mlx_utils/image/triangle.c\
 ./mlx_utils/image/image.c\
+./mlx_utils/image/pixel.c\
 ./mlx_utils/image/line.c\
 ./dda.c\
 ./draw/event_state.c\
@@ -81,6 +89,7 @@ INCS	=\
 ./mlx_linux\
 ./mlx_utils/color\
 ./mlx_utils/vec2\
+./mlx_utils/texture\
 ./mlx_utils/event\
 ./mlx_utils/event/window\
 ./mlx_utils/event/keyboard\
@@ -118,13 +127,31 @@ fclean:		clean
 
 re:			fclean all
 
+fast:		CFLAGS+= -Ofast -flto -march=native
+fast:		re
+			./$(NAME)
+
+fsanitize:	CFLAGS+= -g3 -fsanitize=address
+fsanitize:	re
+			./$(NAME)
+
 valgrind:	CFLAGS+= -g3
 valgrind:	re
+			@clear
 			@valgrind														\
 			-q																\
 			--leak-check=full												\
 			--show-leak-kinds=all											\
 			--track-origins=yes												\
+			--suppressions=./.mlx.supp										\
 			./$(NAME)														\
 
-.PHONY:		all clean fclean re bonus
+callgrind:	CFLAGS+= -g3
+callgrind:	re
+			@clear
+			@valgrind														\
+			-q																\
+			--tool=callgrind												\
+			./$(NAME)														\
+
+.PHONY:		all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 10:27:10 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/04/28 18:29:57 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/05 18:51:15 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,28 @@ bool	vec2f_in_range(t_vec2f v, t_vec2f min, t_vec2f max)
 
 t_vec2f	vec2f_add(t_vec2f a, t_vec2f b)
 {
-	t_vec2f	out;
-
-	out.x = a.x + b.x;
-	out.y = a.y + b.y;
-	return (out);
+	return ((t_vec2f){
+		.x = a.x + b.x,
+		.y = a.y + b.y,
+	});
 }
 
-#include <stdio.h>
-float	vec2f_dist(t_vec2f a, t_vec2f b)
+t_vec2f	vec2f_mul(t_vec2f a, t_vec2f b)
 {
-	t_vec2f	dist;
+	return ((t_vec2f){
+		.x = a.x * b.x,
+		.y = a.y * b.y,
+	});
+}
 
-	dist.x = fabsf(a.x - b.x);
-	dist.y = fabsf(a.y - b.y);
-	return (hypotf(dist.x, dist.y));
+float	cosin_similarity(t_vec2f a, t_vec2f b)
+{
+	float	dot;
+	float	abs;
+
+	a = vec2f_normalize(a);
+	b = vec2f_normalize(b);
+	dot = vec2f_dot_produc(a, b);
+	abs = vec2f_size(a) * vec2f_size(b);
+	return (dot / abs);
 }
