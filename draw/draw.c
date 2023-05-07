@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 18:21:13 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/06 21:36:59 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:40:54 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	image_put_image_line(t_image *dest, int height, t_data *data, int i)
 	{
 		pix.coord = (t_vec2){col, (int)(index * scale)};
 		pix.color = data->texture[dda.boundarie]->column[col][pix.coord.y];
-		normal(data->nmap, &pix, dda, data->player.view);
 		pix.coord = (t_vec2){i, dest->center.y - (height / 2) + index};
 		image_put_pixel(dest, pix);
 	}
@@ -106,5 +105,4 @@ void	draw_image(t_screen *screen)
 		wall = 1 / wall * DIST;
 		image_put_image_line(screen->img, wall, data, index);
 	}
-	draw_minimap(screen);
 }

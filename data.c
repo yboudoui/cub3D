@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:04:20 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/06 21:37:42 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:42:34 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ t_data	data_init(t_screen *screen, t_color c, t_color f, char **map)
 	t_data	data;
 
 	data.map = (t_map){map, (t_vec2){10, 12}};
-	data.texture[NORTH] = texture_init(screen->mlx, "./texture/small/p.xpm");
-	data.texture[SOUHT] = texture_init(screen->mlx, "./texture/small/p.xpm");
-	data.texture[EAST] = texture_init(screen->mlx, "./texture/small/p.xpm");
-	data.texture[WEST] = texture_init(screen->mlx, "./texture/small/p.xpm");
-	data.nmap = normal_map_create(screen->mlx,
-			"./texture/small/p.normal_map.xpm");
+	data.texture[NORTH] = texture_init(screen->mlx, "./texture/north.xpm");
+	data.texture[SOUHT] = texture_init(screen->mlx, "./texture/south.xpm");
+	data.texture[EAST] = texture_init(screen->mlx, "./texture/east.xpm");
+	data.texture[WEST] = texture_init(screen->mlx, "./texture/weast.xpm");
 	data.floor_ceilling = image_env(screen, c, f);
 	data.walls = ft_calloc(screen->size.x, sizeof(t_dda));
 	return (data);
