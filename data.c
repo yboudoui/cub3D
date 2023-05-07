@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:04:20 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 18:58:24 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 20:18:29 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ bool	data_init(t_screen *screen, t_config config)
 	static t_data	data;
 
 	data.map = (t_map){config.map, config.map_size};
-	data.texture[NORTH] = texture_init(screen->mlx, config.north_texture);
-	data.texture[SOUHT] = texture_init(screen->mlx, config.south_texture);
+	data.texture[SOUHT] = texture_init(screen->mlx, config.north_texture);
+	data.texture[NORTH] = texture_init(screen->mlx, config.south_texture);
 	data.texture[EAST] = texture_init(screen->mlx, config.east_texture);
 	data.texture[WEST] = texture_init(screen->mlx, config.west_texture);
 	data.floor_ceilling = image_env(screen,
@@ -55,11 +55,11 @@ bool	player_init(t_data *data, t_vec2f pos, float view)
 {
 	if (data == NULL)
 		return (false);
-	data->player.pos = pos;
+	data->player.pos = vec2f_add(pos, (t_vec2f){0.5, 0.5});
 	data->player.fov = 60.0;
 	precompute_init(data->player.fov, WIDTH);
 	data->player.hfov = c(60.0 / 2);
-	data->player.view = c(view + 90);
+	data->player.view = c(view);
 	data->player.mouse_speed = c(1);
 	return (true);
 }

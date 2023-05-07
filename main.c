@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 18:58:58 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 20:09:05 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	init(t_screen *screen, t_config config)
 {
 	if (data_init(screen, config) == false)
 		return (false);
-	return (player_init(screen->data, config.player_pos, EAST));
+	return (player_init(screen->data, config.player_pos, config.player_angle));
 }
 
 void	stop(t_screen *screen)
