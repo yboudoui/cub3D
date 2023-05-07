@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 16:33:28 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:09:29 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@
 # include "texture.h"
 # include <math.h>
 # include "str.h"
-
-# define TILE_SIZE 64
-# define FOV 60
-# define HALF_FOV 30
+# include "parsing.h"
 
 typedef enum e_boundarie {
 	NORTH,
@@ -36,7 +33,6 @@ typedef enum e_boundarie {
 typedef struct s_map {
 	char	**data;
 	t_vec2	size;
-	t_vec2	world_size;
 }	t_map;
 
 typedef struct s_dda {
@@ -99,7 +95,7 @@ float			wrap_angle(float angle_deg);
 
 void			draw_minimap(t_screen *screen);
 
-t_data			data_init(t_screen *screen, t_color c, t_color f, char **map);
+t_data			data_init(t_screen *screen, t_config config);
 void			data_destroy(t_data *data);
 void			player_init(t_data *data, t_vec2f pos, float view);
 

@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:00:22 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/07 16:06:42 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:10:23 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ typedef struct s_config
 	char	*east_texture;
 	t_vec2f	player_pos;
 	float	player_angle;
-	bool	set_floor_color;
-	bool	set_ceiling_color;
 	t_color	floor_color;
 	t_color	ceiling_color;
 	char	**map;
+	t_vec2	map_size;
+	bool	set_floor_color;
+	bool	set_ceiling_color;
 	t_list	*submap;
 }	t_config;
 

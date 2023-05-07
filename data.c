@@ -6,22 +6,24 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:04:20 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 16:31:06 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:10:04 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
+#include "parsing.h"
 
-t_data	data_init(t_screen *screen, t_color c, t_color f, char **map)
+t_data	data_init(t_screen *screen, t_config config)
 {
 	t_data	data;
 
-	data.map = (t_map){map, (t_vec2){10, 12}, vec2(0)};
-	data.texture[NORTH] = texture_init(screen->mlx, "./texture/north.xpm");
-	data.texture[SOUHT] = texture_init(screen->mlx, "./texture/south.xpm");
-	data.texture[EAST] = texture_init(screen->mlx, "./texture/east.xpm");
-	data.texture[WEST] = texture_init(screen->mlx, "./texture/weast.xpm");
-	data.floor_ceilling = image_env(screen, c, f);
+	data.map = (t_map){config.map, config.map_size};
+	data.texture[NORTH] = texture_init(screen->mlx, config.north_texture);
+	data.texture[SOUHT] = texture_init(screen->mlx, config.south_texture);
+	data.texture[EAST] = texture_init(screen->mlx, config.east_texture);
+	data.texture[WEST] = texture_init(screen->mlx, config.west_texture);
+	data.floor_ceilling = image_env(screen,
+			config.ceiling_color, config.floor_color);
 	data.walls = ft_calloc(screen->size.x, sizeof(t_dda));
 	return (data);
 }
