@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/06 21:37:54 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:39:42 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct s_data {
 	t_dda			*walls;
 	t_image			*floor_ceilling;
 	t_texture_		*texture[MAX_BOUNDARIE];
-	t_normal_map	nmap;
 }	t_data;
 
 t_image			*image_env(t_screen *s, t_color ground, t_color ceiling);
