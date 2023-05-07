@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:54:26 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/06 21:34:35 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 15:52:15 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_list	*parse_submap(t_list *head, int i, char *str)
 	tmp = prev;
 	while (tmp)
 	{
-		lst_add_back(&out, lst_new(tmp->content));
+		lst_add_back(&out, lst_new(ft_strdup(tmp->content)));
 		tmp = tmp->next;
 	}
 	if (!out)

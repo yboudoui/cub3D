@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/05 17:53:49 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 15:56:02 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,12 @@ int	main(int argc, char **argv)
 		return (-1);
 	}
 	if (parser(argv[1], &data.config) == false)
+	{
+		free_map(&data.config);
 		return (-1);
+	}
+	free_map(&data.config);
+	exit(0);
 	screen = screen_create("cub3D", vec2(WIDTH, HEIGHT));
 	if (NULL == screen)
 		return (-2);

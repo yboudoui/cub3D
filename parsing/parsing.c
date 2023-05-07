@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:08:43 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/06 20:28:49 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 15:55:24 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,11 @@ bool	parser(char *filename, t_config *config)
 	if (!head)
 		return (ft_error("Error\nInvalid file\n"));
 	if (parse_texture(head, config) == false)
-		return (ft_error("Error\nInvalid texture\n"));
+		return (lst_clear(&head, free), ft_error("Error\nInvalid texture\n"));
 	if (parse_colors(head, config) == false)
-		return (ft_error("Error\nInvalid colors\n"));
+		return (lst_clear(&head, free), ft_error("Error\nInvalid colors\n"));
 	if (parse_map(head, config) == false)
-		return (ft_error("Error\nInvalid map\n"));
-	lst_clear(&head, free);
+		return (lst_clear(&head, free), ft_error("Error\nInvalid map\n"));
 	debug(config);
-	free_map(config);
-	exit(0);
+	return (lst_clear(&head, free), true);
 }
