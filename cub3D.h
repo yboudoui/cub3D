@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:14:30 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 18:14:08 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:39:59 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ float			wrap_angle(float angle_deg);
 
 void			draw_minimap(t_screen *screen);
 
-t_data			data_init(t_screen *screen, t_config config);
+bool			data_init(t_screen *screen, t_config config);
 void			data_destroy(t_data *data);
-void			player_init(t_data *data, t_vec2f pos, float view);
+bool			player_init(t_data *data, t_vec2f pos, float view);
 
 #endif

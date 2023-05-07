@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 18:14:37 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:40:15 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,9 @@ int	draw(t_screen *screen)
 
 void	init(t_screen *screen, t_config config)
 {
-	static t_data	data;
-
-	data = data_init(screen, config);
-	screen->data = &data;
-	player_init(&data, config.player_pos, EAST);
-	init_minimap(screen);
+	if (data_init(screen, config) == false)
+		return (false);
+	return (player_init(screen->data, config.player_pos, EAST));
 }
 
 void	stop(t_screen *screen)
