@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 15:54:26 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/07 15:52:15 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:53:43 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ void	map_str_transform(void *tmp)
 	{
 		if (ft_isspace(str[i]))
 			str[i] = '1';
+		if (str[i] == 'N' || str[i] == 'S'\
+				|| str[i] == 'W' || str[i] == 'E')
+			str[i] = '0';
 		i++;
 	}
 	return ;

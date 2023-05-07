@@ -2,8 +2,8 @@ NO      ./textures/eagle.xpm
 
 
 SO ./textures/greystone.xpm
-EA ./textures/red.xpm ssS
-WE ./textures/purpleston
+EA ./textures/red.xpm
+WE ./textures/purpleston.xpm
 
 C 255,20 ,             30                  
 
