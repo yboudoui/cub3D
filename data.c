@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:04:20 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 18:37:42 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:58:24 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ bool	data_init(t_screen *screen, t_config config)
 
 void	data_destroy(t_data *data)
 {
+	if (data == NULL)
+		return ;
 	texture_destroy(data->texture[NORTH]);
 	texture_destroy(data->texture[SOUHT]);
 	texture_destroy(data->texture[WEST]);

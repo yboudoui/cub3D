@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:16:09 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 15:39:06 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:45:45 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,11 @@ t_precompute	precompute(t_precompute *in)
 {
 	static t_precompute	*out;
 
-	if (out == NULL)
+	if (in)
 		out = in;
-	return (*out);
+	if (out)
+		return (*out);
+	return ((t_precompute){0});
 }
 
 int	y_wrap_angle(int angle)

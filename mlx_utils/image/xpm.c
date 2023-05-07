@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 21:44:58 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/04 21:45:35 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:44:19 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_image	*image_new_xpm(t_mlx *data, char *path)
 	out->mlx = data->mlx;
 	out->data = mlx_xpm_file_to_image(out->mlx, path,
 			&out->size.x, &out->size.y);
+	if (out->data == NULL)
+		return (free(out), NULL);
 	out->addr = mlx_get_data_addr(out->data,
 			&out->bits_per_pixel,
 			&out->line_length,

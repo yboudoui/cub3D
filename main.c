@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 14:51:33 by yboudoui          #+#    #+#             */
-/*   Updated: 2023/05/07 18:40:15 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:58:58 by yboudoui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	draw(t_screen *screen)
 	return (0);
 }
 
-void	init(t_screen *screen, t_config config)
+bool	init(t_screen *screen, t_config config)
 {
 	if (data_init(screen, config) == false)
 		return (false);
@@ -48,9 +48,11 @@ int	main(int argc, char **argv)
 	screen = screen_create("cub3D", (t_vec2){WIDTH, HEIGHT});
 	if (NULL == screen)
 		return (-2);
-	init(screen, config);
-	mlx_loop_hook(screen->mlx->mlx, draw, screen);
-	mlx_loop(screen->mlx->mlx);
+	if (init(screen, config))
+	{
+		mlx_loop_hook(screen->mlx->mlx, draw, screen);
+		mlx_loop(screen->mlx->mlx);
+	}
 	free_map(&config);
 	return (stop(screen), 0);
 }
