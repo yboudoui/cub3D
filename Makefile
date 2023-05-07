@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/07 17:05:25 by kdhrif           ###   ########.fr        #
+#    Updated: 2023/05/07 17:22:14 by kdhrif           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,6 +74,20 @@ SRCS	=\
 ./dda.c\
 ./draw/event_state.c\
 ./draw/draw.c\
+./parsing/ft_error.c\
+./parsing/parsing.c\
+./parsing/ft_texture_utils.c\
+./parsing/ft_texture_parsing.c\
+./parsing/ft_colors_parsing.c\
+./parsing/ft_colors_parsing_2.c\
+./parsing/parsing_debug.c\
+./parsing/debug_2.c\
+./parsing/ft_map_parsing.c\
+./parsing/ft_map_parsing_2.c\
+./parsing/ft_map_utils.c\
+./parsing/ft_player_parsing.c\
+./parsing/general_utils.c\
+./parsing/ft_texture_parsing_2.c\
 
 INCS	=\
 ./utils/str\
