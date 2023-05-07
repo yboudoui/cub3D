@@ -6,7 +6,7 @@
 /*   By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 16:18:51 by yboudoui          #+#    #+#             */
-/*   Updated: 2022/11/27 06:27:45 by yboudoui         ###   ########.fr       */
+/*   Updated: 2023/05/07 17:26:36 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define STR_H
 
 # include "memory.h"
+# include <unistd.h>
 
 size_t	ft_strlen(const char *s);
 char	*ft_strtrim(char const *s1, char const *set);

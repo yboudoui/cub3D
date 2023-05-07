@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/07 17:24:20 by kdhrif           ###   ########.fr        #
+#    Updated: 2023/05/07 17:26:11 by kdhrif           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,13 @@ SRCS	=\
 ./utils/str/ft_strlen.c\
 ./utils/str/ft_substr.c\
 ./utils/str/ft_split.c\
+./utils/str/ft_putstr_fd.c\
+./utils/str/ft_isalpha.c\
+./utils/str/ft_isalnum.c\
+./utils/str/ft_is_space_nl_comma.c\
+./utils/str/ft_strdup.c\
+./utils/str/ft_atoi.c\
+./utils/str/ft_strjoin.c\
 ./utils/lst/source/ft_lst_remove_one.c\
 ./utils/lst/source/ft_lstclear.c\
 ./utils/lst/source/ft_lstmap.c\
