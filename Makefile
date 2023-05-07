@@ -6,7 +6,7 @@
 #    By: yboudoui <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/19 14:53:15 by yboudoui          #+#    #+#              #
-#    Updated: 2023/05/07 17:26:11 by kdhrif           ###   ########.fr        #
+#    Updated: 2023/05/07 17:30:46 by kdhrif           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,6 +105,7 @@ INCS	=\
 ./utils/memory\
 ./utils/int_array\
 ./utils/get_next_line\
+./parsing/\
 .\
 ./mlx_linux\
 ./mlx_linux\
