@@ -6,7 +6,7 @@
 /*   By: kdhrif <kdhrif@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 16:58:29 by kdhrif            #+#    #+#             */
-/*   Updated: 2023/05/07 18:33:58 by kdhrif           ###   ########.fr       */
+/*   Updated: 2023/05/08 12:22:40 by kdhrif           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ bool	parse_texture_north(t_list *head, t_config *config)
 				return (xfree(&config->north_texture), false);
 			config->north_texture = get_texture_path(str, "NO");
 			if (ends_with(config->north_texture, ".xpm") == false)
-			{
-				printf("%s", config->north_texture);
 				return (xfree(&config->north_texture), false);
-			}
 		}
 		tmp = tmp->next;
 	}
